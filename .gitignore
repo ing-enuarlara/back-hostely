@@ -2,3 +2,4 @@ src/main/resources/application.properties
 app-db.sql
 target
 .vscode
+hostely.postman_collection.json
