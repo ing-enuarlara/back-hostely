@@ -23,7 +23,9 @@ public class Usuario {
     @JoinColumn(name = "rol_id")
     private Rol rol;
 
-    private Long sedeId;
+    @ManyToOne
+    @JoinColumn(name = "sede_id")
+    private Sede sede;
 
     private LocalDateTime creadoEn = LocalDateTime.now();
 
@@ -43,8 +45,8 @@ public class Usuario {
     public Rol getRol() { return rol; }
     public void setRol(Rol rol) { this.rol = rol; }
 
-    public Long getSedeId() { return sedeId; }
-    public void setSedeId(Long sedeId) { this.sedeId = sedeId; }
+    public Sede getSede() { return sede; }
+    public void setSede(Sede sede) { this.sede = sede; }
 
     public LocalDateTime getCreadoEn() { return creadoEn; }
     public void setCreadoEn(LocalDateTime creadoEn) { this.creadoEn = creadoEn; }

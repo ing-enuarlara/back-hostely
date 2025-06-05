@@ -42,7 +42,7 @@ public class UsuarioController {
                     usuario.setEmail(datos.getEmail());
                     usuario.setPasswordHash(datos.getPasswordHash());
                     usuario.setRol(datos.getRol());
-                    usuario.setSedeId(datos.getSedeId());
+                    usuario.setSede(datos.getSede());
                     return ResponseEntity.ok(usuarioService.crear(usuario));
                 }).orElse(ResponseEntity.notFound().build());
     }
