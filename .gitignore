@@ -1,5 +1,5 @@
 src/main/resources/application.properties
-app-db.sql
+db-app-hostely.sql
 target
 .vscode
 hostely.postman_collection.json
