@@ -41,8 +41,8 @@ public class UsuarioController {
                     usuario.setNombre(datos.getNombre());
                     usuario.setEmail(datos.getEmail());
                     usuario.setPasswordHash(datos.getPasswordHash());
-                    usuario.setRol(datos.getRol());
-                    usuario.setSede(datos.getSede());
+                    usuario.setRoles(datos.getRoles());
+                    usuario.setSedes(datos.getSedes());
                     return ResponseEntity.ok(usuarioService.crear(usuario));
                 }).orElse(ResponseEntity.notFound().build());
     }
