@@ -2,9 +2,12 @@ package com.back.hostely.repository;
 
 import com.back.hostely.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Optional<Usuario> findByEmail(String email);
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    List<Usuario> findByNombreContainingIgnoreCase(String nombre);
+    List<Usuario> findByNegocioId(Integer negocioId);
 }

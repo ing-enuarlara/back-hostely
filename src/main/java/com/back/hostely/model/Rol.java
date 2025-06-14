@@ -1,8 +1,6 @@
 package com.back.hostely.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-// import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -11,7 +9,7 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rol_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "rol_nombre", nullable = false, unique = true)
     private String nombre;
@@ -20,16 +18,15 @@ public class Rol {
     private Integer negocioId;
 
     @Column(name = "rol_creado_en")
-    private LocalDateTime creadoEn = LocalDateTime.now();
+    private String creadoEn;
 
-    // @OneToMany(mappedBy = "rol")
-    // private List<UsuarioRol> usuarios;
+    // Getters y Setters
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,19 +46,11 @@ public class Rol {
         this.negocioId = negocioId;
     }
 
-    public LocalDateTime getCreadoEn() {
+    public String getCreadoEn() {
         return creadoEn;
     }
 
-    public void setCreadoEn(LocalDateTime creadoEn) {
+    public void setCreadoEn(String creadoEn) {
         this.creadoEn = creadoEn;
     }
-
-    // public List<UsuarioRol> getUsuarios() {
-    //     return usuarios;
-    // }
-
-    // public void setUsuarios(List<UsuarioRol> usuarios) {
-    //     this.usuarios = usuarios;
-    // }
 }

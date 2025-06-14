@@ -2,53 +2,52 @@ package com.back.hostely.controller;
 
 import com.back.hostely.model.Usuario;
 import com.back.hostely.service.UsuarioService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+    @Autowired
+    private UsuarioService service;
 
     @GetMapping
     public List<Usuario> listar() {
-        return usuarioService.listarTodos();
+        return service.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> obtenerPorId(@PathVariable Long id) {
-        return usuarioService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<Usuario> porId(@PathVariable Integer id) {
+        return service.buscarPorId(id);
+    }
+
+    @GetMapping("/buscar")
+    public List<Usuario> porNombre(@RequestParam String nombre) {
+        return service.buscarPorNombre(nombre);
+    }
+
+    @GetMapping("/negocio/{negocioId}")
+    public List<Usuario> porNegocio(@PathVariable Integer negocioId) {
+        return service.buscarPorNegocio(negocioId);
     }
 
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        return usuarioService.crear(usuario);
+    public Usuario crear(@RequestBody Usuario u) {
+        return service.crear(u);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario datos) {
-        return usuarioService.buscarPorId(id)
-                .map(usuario -> {
-                    usuario.setNombre(datos.getNombre());
-                    usuario.setEmail(datos.getEmail());
-                    usuario.setPasswordHash(datos.getPasswordHash());
-                    usuario.setRoles(datos.getRoles());
-                    usuario.setSedes(datos.getSedes());
-                    return ResponseEntity.ok(usuarioService.crear(usuario));
-                }).orElse(ResponseEntity.notFound().build());
+    public Usuario actualizar(@PathVariable Integer id, @RequestBody Usuario datos) {
+        return service.actualizar(id, datos);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        usuarioService.eliminar(id);
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
     }
 }

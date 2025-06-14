@@ -6,26 +6,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioSedeService {
 
     @Autowired
-    private UsuarioSedeRepository usuarioSedeRepository;
+    private UsuarioSedeRepository repository;
 
-    public List<UsuarioSede> findAll() {
-        return usuarioSedeRepository.findAll();
+    public List<UsuarioSede> listarTodos() {
+        return repository.findAll();
     }
 
-    public List<UsuarioSede> findByUsuarioId(Long usuarioId) {
-        return usuarioSedeRepository.findByUsuarioId(usuarioId);
+    public Optional<UsuarioSede> buscarPorId(Integer id) {
+        return repository.findById(id);
     }
 
-    public UsuarioSede save(UsuarioSede usuarioSede) {
-        return usuarioSedeRepository.save(usuarioSede);
+    public List<UsuarioSede> buscarPorUsuario(Integer usuarioId) {
+        return repository.findByUsuarioId(usuarioId);
     }
 
-    public void deleteById(Long id) {
-        usuarioSedeRepository.deleteById(id);
+    public List<UsuarioSede> buscarPorSede(Integer sedeId) {
+        return repository.findBySedeId(sedeId);
+    }
+
+    public UsuarioSede crear(UsuarioSede relacion) {
+        return repository.save(relacion);
+    }
+
+    public UsuarioSede actualizar(Integer id, UsuarioSede datos) {
+        return repository.findById(id).map(r -> {
+            r.setUsuarioId(datos.getUsuarioId());
+            r.setSedeId(datos.getSedeId());
+            return repository.save(r);
+        }).orElse(null);
+    }
+
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
     }
 }

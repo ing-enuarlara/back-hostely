@@ -2,50 +2,47 @@ package com.back.hostely.controller;
 
 import com.back.hostely.model.Sede;
 import com.back.hostely.service.SedeService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sedes")
+@CrossOrigin(origins = "*")
 public class SedeController {
 
-    private final SedeService sedeService;
-
-    public SedeController(SedeService sedeService) {
-        this.sedeService = sedeService;
-    }
+    @Autowired
+    private SedeService service;
 
     @GetMapping
-    public List<Sede> listar() {
-        return sedeService.listarTodos();
+    public List<Sede> listarTodos() {
+        return service.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sede> obtenerPorId(@PathVariable Long id) {
-        return sedeService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<Sede> porId(@PathVariable Integer id) {
+        return service.buscarPorId(id);
+    }
+
+    @GetMapping("/negocio/{negocioId}")
+    public List<Sede> porNegocio(@PathVariable Integer negocioId) {
+        return service.buscarPorNegocio(negocioId);
     }
 
     @PostMapping
     public Sede crear(@RequestBody Sede sede) {
-        return sedeService.crear(sede);
+        return service.crear(sede);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Sede> actualizar(@PathVariable Long id, @RequestBody Sede datos) {
-        return sedeService.buscarPorId(id)
-                .map(sede -> {
-                    sede.setNombre(datos.getNombre());
-                    sede.setDireccion(datos.getDireccion());
-                    return ResponseEntity.ok(sedeService.crear(sede));
-                }).orElse(ResponseEntity.notFound().build());
+    public Sede actualizar(@PathVariable Integer id, @RequestBody Sede datos) {
+        return service.actualizar(id, datos);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        sedeService.eliminar(id);
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
     }
 }

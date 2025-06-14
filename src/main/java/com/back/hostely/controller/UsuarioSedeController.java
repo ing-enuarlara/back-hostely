@@ -6,31 +6,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuario-sedes")
+@RequestMapping("/api/usuario-sedes")
+@CrossOrigin(origins = "*")
 public class UsuarioSedeController {
 
     @Autowired
-    private UsuarioSedeService usuarioSedeService;
+    private UsuarioSedeService service;
 
     @GetMapping
-    public List<UsuarioSede> getAll() {
-        return usuarioSedeService.findAll();
+    public List<UsuarioSede> listar() {
+        return service.listarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<UsuarioSede> porId(@PathVariable Integer id) {
+        return service.buscarPorId(id);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public List<UsuarioSede> getByUsuario(@PathVariable Long usuarioId) {
-        return usuarioSedeService.findByUsuarioId(usuarioId);
+    public List<UsuarioSede> porUsuario(@PathVariable Integer usuarioId) {
+        return service.buscarPorUsuario(usuarioId);
+    }
+
+    @GetMapping("/sede/{sedeId}")
+    public List<UsuarioSede> porSede(@PathVariable Integer sedeId) {
+        return service.buscarPorSede(sedeId);
     }
 
     @PostMapping
-    public UsuarioSede create(@RequestBody UsuarioSede usuarioSede) {
-        return usuarioSedeService.save(usuarioSede);
+    public UsuarioSede crear(@RequestBody UsuarioSede relacion) {
+        return service.crear(relacion);
+    }
+
+    @PutMapping("/{id}")
+    public UsuarioSede actualizar(@PathVariable Integer id, @RequestBody UsuarioSede datos) {
+        return service.actualizar(id, datos);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        usuarioSedeService.deleteById(id);
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
     }
 }

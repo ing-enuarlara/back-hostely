@@ -1,9 +1,6 @@
 package com.back.hostely.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usuario_sedes")
@@ -12,49 +9,27 @@ public class UsuarioSede {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usse_id")
-    private Long id;
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "usse_uss", nullable = false)
-    @JsonIgnore
-    private Usuario usuario;
+    @Column(name = "usse_uss")
+    private Integer usuarioId;
 
-    @ManyToOne
-    @JoinColumn(name = "usse_sede", nullable = false)
-    private Sede sede;
+    @Column(name = "usse_sede")
+    private Integer sedeId;
 
     @Column(name = "usse_creado_en")
-    private LocalDateTime creadoEn = LocalDateTime.now();
+    private String creadoEn;
 
-    public Long getId() {
-        return id;
-    }
+    // Getters y Setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Integer getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(Integer usuarioId) { this.usuarioId = usuarioId; }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
+    public Integer getSedeId() { return sedeId; }
+    public void setSedeId(Integer sedeId) { this.sedeId = sedeId; }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Sede getSede() {
-        return sede;
-    }
-
-    public void setSede(Sede sede) {
-        this.sede = sede;
-    }
-
-    public LocalDateTime getCreadoEn() {
-        return creadoEn;
-    }
-
-    public void setCreadoEn(LocalDateTime creadoEn) {
-        this.creadoEn = creadoEn;
-    }
+    public String getCreadoEn() { return creadoEn; }
+    public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }
 }

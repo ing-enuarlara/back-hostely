@@ -2,6 +2,7 @@ package com.back.hostely.service;
 
 import com.back.hostely.model.Sede;
 import com.back.hostely.repository.SedeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,25 +11,36 @@ import java.util.Optional;
 @Service
 public class SedeService {
 
-    private final SedeRepository sedeRepository;
-
-    public SedeService(SedeRepository sedeRepository) {
-        this.sedeRepository = sedeRepository;
-    }
+    @Autowired
+    private SedeRepository repository;
 
     public List<Sede> listarTodos() {
-        return sedeRepository.findAll();
+        return repository.findAll();
     }
 
-    public Optional<Sede> buscarPorId(Long id) {
-        return sedeRepository.findById(id);
+    public Optional<Sede> buscarPorId(Integer id) {
+        return repository.findById(id);
     }
 
-    public Sede crear(Sede usuario) {
-        return sedeRepository.save(usuario);
+    public List<Sede> buscarPorNegocio(Integer negocioId) {
+        return repository.findByNegocioId(negocioId);
     }
 
-    public void eliminar(Long id) {
-        sedeRepository.deleteById(id);
+    public Sede crear(Sede sede) {
+        return repository.save(sede);
+    }
+
+    public Sede actualizar(Integer id, Sede datos) {
+        return repository.findById(id).map(s -> {
+            s.setNombre(datos.getNombre());
+            s.setDireccion(datos.getDireccion());
+            s.setIngreso(datos.getIngreso());
+            s.setNegocioId(datos.getNegocioId());
+            return repository.save(s);
+        }).orElse(null);
+    }
+
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
     }
 }
