@@ -44,7 +44,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
             "http://localhost:5173",
-            "https://front-hostely-web.vercel.app"
+            "https://front-hostely-web.vercel.app",
+            "https://api.hostely.es"
         ));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
