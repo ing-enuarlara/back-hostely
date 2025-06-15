@@ -17,6 +17,9 @@ public class UsuarioRol {
     @Column(name = "usrl_rol")
     private Integer rolId;
 
+    @Column(name = "usrl_principal")
+    private String principal;
+
     @Column(name = "usrl_creado_en")
     private String creadoEn;
 
@@ -29,6 +32,9 @@ public class UsuarioRol {
 
     public Integer getRolId() { return rolId; }
     public void setRolId(Integer rolId) { this.rolId = rolId; }
+
+    public String gePrincipal() { return principal; }
+    public void sePrincipal(String principal) { this.principal = principal; }
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }

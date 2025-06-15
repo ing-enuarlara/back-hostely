@@ -74,6 +74,7 @@ public class AuthController {
         UsuarioRol usuarioRol = new UsuarioRol();
         usuarioRol.setUsuarioId(usuarioGuardado.getId());
         usuarioRol.setRolId(2);
+        usuarioRol.sePrincipal("SI");
         usuarioRolRepository.save(usuarioRol);
 
         return ResponseEntity.ok("Usuario registrado con éxito");
