@@ -108,6 +108,7 @@ public class AuthController {
                 Map<String, Object> rolMap = new HashMap<>();
                 rolMap.put("id", rol.getId());
                 rolMap.put("nombre", rol.getNombre());
+                rolMap.put("principal", ur.gePrincipal());
                 roles.add(rolMap);
             });
         }
