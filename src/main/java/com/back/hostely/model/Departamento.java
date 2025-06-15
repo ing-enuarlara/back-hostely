@@ -8,7 +8,7 @@ public class Departamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dep_id")
+    @Column(name = "dep_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "dep_nombre")

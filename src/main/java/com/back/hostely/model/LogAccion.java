@@ -8,7 +8,7 @@ public class LogAccion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id")
+    @Column(name = "log_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "log_usuario")
@@ -26,7 +26,7 @@ public class LogAccion {
     @Column(name = "log_datos_nuevos")
     private String datosNuevos;
 
-    @Column(name = "log_creado_en")
+    @Column(name = "log_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

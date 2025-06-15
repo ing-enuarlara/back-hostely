@@ -8,7 +8,7 @@ public class Rol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rol_id")
+    @Column(name = "rol_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "rol_nombre", nullable = false, unique = true)
@@ -17,7 +17,7 @@ public class Rol {
     @Column(name = "rol_negocio", nullable = false)
     private Integer negocioId;
 
-    @Column(name = "rol_creado_en")
+    @Column(name = "rol_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

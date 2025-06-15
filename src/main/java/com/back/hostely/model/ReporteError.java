@@ -8,7 +8,7 @@ public class ReporteError {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rperr_id")
+    @Column(name = "rperr_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "rperr_numero")
@@ -44,7 +44,7 @@ public class ReporteError {
     @Column(name = "rerr_request")
     private String request;
 
-    @Column(name = "rperr_creado_en")
+    @Column(name = "rperr_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

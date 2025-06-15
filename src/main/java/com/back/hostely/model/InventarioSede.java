@@ -8,7 +8,7 @@ public class InventarioSede {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "inse_id")
+    @Column(name = "inse_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "inse_insumo")
@@ -20,7 +20,7 @@ public class InventarioSede {
     @Column(name = "inse_stock_actual")
     private Double stockActual;
 
-    @Column(name = "inse_creado_en")
+    @Column(name = "inse_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

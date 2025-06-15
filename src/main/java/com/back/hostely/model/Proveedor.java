@@ -8,7 +8,7 @@ public class Proveedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "prov_id")
+    @Column(name = "prov_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "prov_nombre", nullable = false)
@@ -23,7 +23,7 @@ public class Proveedor {
     @Column(name = "prov_direccion")
     private String direccion;
 
-    @Column(name = "prov_creado_en")
+    @Column(name = "prov_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

@@ -8,7 +8,7 @@ public class PedidoDetalle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pede_id")
+    @Column(name = "pede_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "pede_pedido")
@@ -23,7 +23,7 @@ public class PedidoDetalle {
     @Column(name = "pede_observaciones")
     private String observaciones;
 
-    @Column(name = "pede_creado_en")
+    @Column(name = "pede_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

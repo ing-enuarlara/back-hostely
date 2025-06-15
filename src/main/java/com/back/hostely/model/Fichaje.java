@@ -8,7 +8,7 @@ public class Fichaje {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fich_id")
+    @Column(name = "fich_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "fich_usuario", nullable = false)
@@ -26,7 +26,7 @@ public class Fichaje {
     @Column(name = "fich_observaciones")
     private String observaciones;
 
-    @Column(name = "fich_creado_en")
+    @Column(name = "fich_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

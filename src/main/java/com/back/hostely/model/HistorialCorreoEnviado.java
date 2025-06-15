@@ -8,7 +8,7 @@ public class HistorialCorreoEnviado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hisco_id")
+    @Column(name = "hisco_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "hisco_fecha")
@@ -41,7 +41,7 @@ public class HistorialCorreoEnviado {
     @Column(name = "hisco_negocio")
     private Integer negocioId;
 
-    @Column(name = "hisco_creado_en")
+    @Column(name = "hisco_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

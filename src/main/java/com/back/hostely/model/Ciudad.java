@@ -8,7 +8,7 @@ public class Ciudad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ciu_id")
+    @Column(name = "ciu_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "ciu_nombre")

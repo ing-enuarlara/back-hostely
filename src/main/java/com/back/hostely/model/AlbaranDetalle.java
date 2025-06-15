@@ -8,7 +8,7 @@ public class AlbaranDetalle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alde_id")
+    @Column(name = "alde_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "alde_albaran")
@@ -20,7 +20,7 @@ public class AlbaranDetalle {
     @Column(name = "alde_cantidad")
     private Double cantidad;
 
-    @Column(name = "alde_creado_en")
+    @Column(name = "alde_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

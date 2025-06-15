@@ -8,7 +8,7 @@ public class UsuarioRol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usrl_id")
+    @Column(name = "usrl_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "usrl_uss")
@@ -20,7 +20,7 @@ public class UsuarioRol {
     @Column(name = "usrl_principal")
     private String principal;
 
-    @Column(name = "usrl_creado_en")
+    @Column(name = "usrl_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

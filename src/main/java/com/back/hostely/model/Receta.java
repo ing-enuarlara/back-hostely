@@ -8,7 +8,7 @@ public class Receta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rece_id")
+    @Column(name = "rece_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "rece_producto")
@@ -20,7 +20,7 @@ public class Receta {
     @Column(name = "rece_cantidad_requerida")
     private Double cantidadRequerida;
 
-    @Column(name = "rece_creado_en")
+    @Column(name = "rece_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y setters

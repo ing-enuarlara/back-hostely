@@ -8,7 +8,7 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pedi_id")
+    @Column(name = "pedi_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "pedi_sede")
@@ -26,7 +26,7 @@ public class Pedido {
     @Column(name = "pedi_enviado")
     private Boolean enviado;
 
-    @Column(name = "pedi_creado_en")
+    @Column(name = "pedi_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y setters

@@ -8,7 +8,7 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "prod_id")
+    @Column(name = "prod_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "prod_nombre", nullable = false)
@@ -23,7 +23,7 @@ public class Producto {
     @Column(name = "prod_negocio", nullable = false)
     private Integer negocioId;
 
-    @Column(name = "prod_creado_en")
+    @Column(name = "prod_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

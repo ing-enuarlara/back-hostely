@@ -8,7 +8,7 @@ public class Insumo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ins_id")
+    @Column(name = "ins_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "ins_nombre", nullable = false)
@@ -29,7 +29,7 @@ public class Insumo {
     @Column(name = "ins_negocio", nullable = false)
     private Integer negocioId;
 
-    @Column(name = "ins_creado_en")
+    @Column(name = "ins_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y setters

@@ -8,7 +8,7 @@ public class Pais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pais_id")
+    @Column(name = "pais_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "pais_nombre")
@@ -20,7 +20,7 @@ public class Pais {
     @Column(name = "pais_codigo")
     private String codigo;
 
-    @Column(name = "pais_creado_en")
+    @Column(name = "pais_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters

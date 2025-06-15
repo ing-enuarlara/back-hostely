@@ -8,7 +8,7 @@ public class HistorialAccion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hil_id")
+    @Column(name = "hil_id", insertable = false, updatable = false)
     private Integer id;
 
     @Column(name = "hil_usuario")
@@ -32,7 +32,7 @@ public class HistorialAccion {
     @Column(name = "hil_tiempo_carga")
     private String tiempoCarga;
 
-    @Column(name = "hil_creado_en")
+    @Column(name = "hil_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
     // Getters y Setters
