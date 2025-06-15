@@ -4,6 +4,7 @@ import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Usuario;
 import com.back.hostely.model.UsuarioRol;
 import com.back.hostely.repository.NegocioRepository;
+import com.back.hostely.repository.RolRepository;
 import com.back.hostely.repository.UsuarioRepository;
 import com.back.hostely.repository.UsuarioRolRepository;
 import com.back.hostely.security.JwtUtil;
@@ -19,9 +20,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private UsuarioRolRepository usuarioRolRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -84,11 +90,32 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
 
+        Usuario usuario = usuarioRepository.findByEmail(loginRequest.get("email")).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado");
+        }
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.get("email"));
         String token = jwtUtil.generateToken(userDetails);
 
+        Optional<Negocio> negocioOpt = negocioRepository.findById(usuario.getNegocioId());
+        List<UsuarioRol> rolesUsuario = usuarioRolRepository.findByUsuarioId(usuario.getId());
+
+        List<Map<String, Object>> roles = new ArrayList<>();
+        for (UsuarioRol ur : rolesUsuario) {
+            rolRepository.findById(ur.getRolId()).ifPresent(rol -> {
+                Map<String, Object> rolMap = new HashMap<>();
+                rolMap.put("id", rol.getId());
+                rolMap.put("nombre", rol.getNombre());
+                roles.add(rolMap);
+            });
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("usuario", usuario);
+        response.put("negocio", negocioOpt.orElse(null));
+        response.put("roles", roles);
         return ResponseEntity.ok(response);
     }
 }
