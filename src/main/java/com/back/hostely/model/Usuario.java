@@ -21,7 +21,7 @@ public class Usuario {
     private Integer paisId;
 
     @Column(name = "uss_telefono")
-    private Integer telefono;
+    private String telefono;
 
     @Column(name = "uss_password_hash", nullable = false)
     private String passwordHash;
@@ -46,8 +46,8 @@ public class Usuario {
     public Integer getPaisId() { return paisId; }
     public void setPaisId(Integer paisId) { this.paisId = paisId; }
 
-    public Integer getTelefono() { return telefono; }
-    public void setTelefono(Integer telefono) { this.telefono = telefono; }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
