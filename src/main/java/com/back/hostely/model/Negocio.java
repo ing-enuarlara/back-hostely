@@ -17,10 +17,10 @@ public class Negocio {
     @Column(name = "nego_tipo", nullable = false)
     private Integer tipo;
 
-    @Column(name = "nego_razon_social", nullable = false, unique = true)
+    @Column(name = "nego_razon_social")
     private String razonSocial;
 
-    @Column(name = "nego_num_empleados", nullable = false)
+    @Column(name = "nego_num_empleados")
     private String numEmpleados;
 
     @Column(name = "nego_pais", nullable = false)

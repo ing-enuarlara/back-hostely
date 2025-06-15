@@ -1,7 +1,11 @@
 package com.back.hostely.controller;
 
+import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Usuario;
+import com.back.hostely.model.UsuarioRol;
+import com.back.hostely.repository.NegocioRepository;
 import com.back.hostely.repository.UsuarioRepository;
+import com.back.hostely.repository.UsuarioRolRepository;
 import com.back.hostely.security.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,12 @@ public class AuthController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private NegocioRepository negocioRepository;
+
+    @Autowired
+    private UsuarioRolRepository usuarioRolRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -44,8 +54,22 @@ public class AuthController {
         if (existingUser.isPresent()) {
             return ResponseEntity.badRequest().body("El correo ya está registrado");
         }
+
+        Negocio negocio = new Negocio();
+        negocio.setEmail(usuario.getEmail());
+        negocio.setPais(usuario.getPaisId());
+        negocio.setTipo(2);
+        negocioRepository.save(negocio);
+
+        usuario.setNegocioId(negocio.getId());
         usuario.setPasswordHash(passwordEncoder.encode(usuario.getPasswordHash()));
-        usuarioRepository.save(usuario);
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+
+        UsuarioRol usuarioRol = new UsuarioRol();
+        usuarioRol.setUsuarioId(usuarioGuardado.getId());
+        usuarioRol.setRolId(2);
+        usuarioRolRepository.save(usuarioRol);
+
         return ResponseEntity.ok("Usuario registrado con éxito");
     }
 
