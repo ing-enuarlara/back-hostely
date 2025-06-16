@@ -38,17 +38,18 @@ public class S3Service {
                 .build();
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
         String uniqueFileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+        String key = folderName + "/" + uniqueFileName;
 
         PutObjectRequest putRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(uniqueFileName)
+                .key(key)
                 .contentType(file.getContentType())
                 .build();
 
         s3.putObject(putRequest, RequestBody.fromBytes(file.getBytes()));
 
-        return "https://" + bucketName + ".s3.amazonaws.com/" + uniqueFileName;
+        return "https://" + bucketName + ".s3.amazonaws.com/" + key;
     }
 }

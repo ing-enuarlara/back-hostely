@@ -53,7 +53,7 @@ public class UsuarioController {
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) throws IOException {
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
-            String url = s3Service.uploadFile(fotoPerfil);
+            String url = s3Service.uploadFile(fotoPerfil, "perfil");
             u.setFotoPerfil(url);
         }
 
@@ -70,7 +70,7 @@ public class UsuarioController {
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) throws IOException {
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
-            String url = s3Service.uploadFile(fotoPerfil);
+            String url = s3Service.uploadFile(fotoPerfil, "perfil");
             datos.setFotoPerfil(url);
         }
 
