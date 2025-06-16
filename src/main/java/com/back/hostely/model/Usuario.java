@@ -14,14 +14,26 @@ public class Usuario {
     @Column(name = "uss_nombre", nullable = false)
     private String nombre;
 
+    @Column(name = "uss_foto_perfil")
+    private String fotoPerfil;
+
+    @Column(name = "uss_edad")
+    private Integer edad;
+
     @Column(name = "uss_email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "uss_pais", nullable = false)
     private Integer paisId;
 
+    @Column(name = "uss_direccion")
+    private String direccion;
+
     @Column(name = "uss_telefono")
     private String telefono;
+
+    @Column(name = "uss_estado_social")
+    private String estadoSocial;
 
     @Column(name = "uss_password_hash", nullable = false)
     private String passwordHash;
@@ -33,12 +45,17 @@ public class Usuario {
     private String creadoEn;
 
     // Getters y Setters
-
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getFotoPerfil() { return fotoPerfil; }
+    public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
+
+    public Integer getEdad() { return edad; }
+    public void setEdad(Integer edad) { this.edad = edad; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -46,8 +63,14 @@ public class Usuario {
     public Integer getPaisId() { return paisId; }
     public void setPaisId(Integer paisId) { this.paisId = paisId; }
 
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getEstadoSocial() { return estadoSocial; }
+    public void setEstadoSocial(String estadoSocial) { this.estadoSocial = estadoSocial; }
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }

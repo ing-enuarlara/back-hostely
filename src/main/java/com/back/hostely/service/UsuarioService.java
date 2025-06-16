@@ -37,11 +37,22 @@ public class UsuarioService {
     public Usuario actualizar(Integer id, Usuario datos) {
         return repository.findById(id).map(u -> {
             u.setNombre(datos.getNombre());
+            u.setEdad(datos.getEdad());
             u.setEmail(datos.getEmail());
             u.setPaisId(datos.getPaisId());
+            u.setDireccion(datos.getDireccion());
             u.setTelefono(datos.getTelefono());
-            u.setPasswordHash(datos.getPasswordHash());
+            u.setEstadoSocial(datos.getEstadoSocial());
             u.setNegocioId(datos.getNegocioId());
+
+            if (datos.getPasswordHash() != null && !datos.getPasswordHash().isBlank()) {
+                u.setPasswordHash(datos.getPasswordHash());
+            }
+
+            if (datos.getFotoPerfil() != null && !datos.getFotoPerfil().isBlank()) {
+                u.setFotoPerfil(datos.getFotoPerfil());
+            }
+
             return repository.save(u);
         }).orElse(null);
     }
