@@ -33,8 +33,8 @@ public class UsuarioRol {
     public Integer getRolId() { return rolId; }
     public void setRolId(Integer rolId) { this.rolId = rolId; }
 
-    public String gePrincipal() { return principal; }
-    public void sePrincipal(String principal) { this.principal = principal; }
+    public String getPrincipal() { return principal; }
+    public void setPrincipal(String principal) { this.principal = principal; }
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }

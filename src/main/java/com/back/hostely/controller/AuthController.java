@@ -74,7 +74,7 @@ public class AuthController {
         UsuarioRol usuarioRol = new UsuarioRol();
         usuarioRol.setUsuarioId(usuarioGuardado.getId());
         usuarioRol.setRolId(2);
-        usuarioRol.sePrincipal("SI");
+        usuarioRol.setPrincipal("SI");
         usuarioRolRepository.save(usuarioRol);
 
         return ResponseEntity.ok("Usuario registrado con éxito");
@@ -108,7 +108,7 @@ public class AuthController {
                 Map<String, Object> rolMap = new HashMap<>();
                 rolMap.put("id", rol.getId());
                 rolMap.put("nombre", rol.getNombre());
-                rolMap.put("principal", ur.gePrincipal());
+                rolMap.put("principal", ur.getPrincipal());
                 roles.add(rolMap);
             });
         }
