@@ -3,6 +3,7 @@ package com.back.hostely.controller;
 import com.back.hostely.model.Fichaje;
 import com.back.hostely.service.FichajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,8 +48,13 @@ public class FichajeController {
     }
 
     @PostMapping
-    public Fichaje registrar(@RequestBody Fichaje fichaje) {
-        return service.registrar(fichaje);
+    public ResponseEntity<?> registrar(@RequestBody Fichaje fichaje) {
+        if (fichaje.getEnlace() != null && service.buscarPorEnlace(fichaje.getEnlace()).isPresent()) {
+            return ResponseEntity.status(409).body("Este enlace de fichaje ya fue utilizado.");
+        }
+
+        Fichaje registrado = service.registrar(fichaje);
+        return ResponseEntity.ok(registrado);
     }
 
     @DeleteMapping("/{id}")

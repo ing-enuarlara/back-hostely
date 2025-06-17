@@ -38,6 +38,10 @@ public class FichajeService {
         return repository.findByNegocioId(negocioId);
     }
 
+    public Optional<Fichaje> buscarPorEnlace(String enlace) {
+        return repository.findByFichEnlace(enlace);
+    }
+
     public Fichaje registrar(Fichaje fichaje) {
         return repository.save(fichaje);
     }

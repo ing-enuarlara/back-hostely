@@ -26,11 +26,14 @@ public class Fichaje {
     @Column(name = "fich_tipo", nullable = false)
     private String tipo; // ENTRADA o SALIDA
 
-    @Column(name = "fich_fecha")
+    @Column(name = "fich_fecha", insertable = false, updatable = false)
     private String fecha;
 
     @Column(name = "fich_observaciones")
     private String observaciones;
+
+    @Column(name = "fich_enlace", nullable = false, unique = true)
+    private String enlace;
 
     @Column(name = "fich_created_at", insertable = false, updatable = false)
     private String creadoEn;
@@ -59,6 +62,9 @@ public class Fichaje {
 
     public String getObservaciones() { return observaciones; }
     public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+
+    public String getEnlace() { return enlace; }
+    public void setEnlace(String enlace) { this.enlace = enlace; }
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }

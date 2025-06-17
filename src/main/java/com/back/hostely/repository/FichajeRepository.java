@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FichajeRepository extends JpaRepository<Fichaje, Integer> {
@@ -12,4 +13,6 @@ public interface FichajeRepository extends JpaRepository<Fichaje, Integer> {
     List<Fichaje> findByPuestoId(Integer puestoId);
     List<Fichaje> findBySedeId(Integer sedeId);
     List<Fichaje> findByNegocioId(Integer negocioId);
+
+    Optional<Fichaje> findByFichEnlace(String fichEnlace);
 }
