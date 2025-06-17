@@ -26,7 +26,7 @@ public class Fichaje {
     @Column(name = "fich_tipo", nullable = false)
     private String tipo; // ENTRADA o SALIDA
 
-    @Column(name = "fich_fecha", insertable = false, updatable = false)
+    @Column(name = "fich_fecha", nullable = false)
     private String fecha;
 
     @Column(name = "fich_observaciones")
