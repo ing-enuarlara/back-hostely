@@ -15,6 +15,7 @@ public class EmpleadoListDTO {
     private String fotoPerfil;
     private Integer paisId;
     private Integer negocioId;
+    private String verificado;
     private String creadoEn;
 
     // Campos de UsuarioEmpleado
@@ -66,6 +67,9 @@ public class EmpleadoListDTO {
 
     public String getTransportePropio() { return transportePropio; }
     public void setTransportePropio(String transportePropio) { this.transportePropio = transportePropio; }
+
+    public String getVerificado() { return verificado; }
+    public void setVerificado(String verificado) { this.verificado = verificado; }
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }

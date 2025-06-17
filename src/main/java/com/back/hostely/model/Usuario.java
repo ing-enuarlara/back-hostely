@@ -41,6 +41,9 @@ public class Usuario {
     @Column(name = "uss_negocio")
     private Integer negocioId;
 
+    @Column(name = "uss_verificado")
+    private String verificado;
+
     @Column(name = "uss_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
@@ -77,6 +80,9 @@ public class Usuario {
 
     public Integer getNegocioId() { return negocioId; }
     public void setNegocioId(Integer negocioId) { this.negocioId = negocioId; }
+
+    public String getVerificado() { return verificado; }
+    public void setVerificado(String verificado) { this.verificado = verificado; }
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }

@@ -11,6 +11,7 @@ public class EmpleadoDTO {
     private String telefono;
     private Integer paisId;
     private Integer negocioId;
+    private String verificado;
 
     // Campos de UsuarioEmpleado
     private String disponibilidad;
@@ -53,4 +54,7 @@ public class EmpleadoDTO {
 
     public String getTransportePropio() { return transportePropio; }
     public void setTransportePropio(String transportePropio) { this.transportePropio = transportePropio; }
+
+    public String getVerificado() { return verificado; }
+    public void setVerificado(String verificado) { this.verificado = verificado; }
 }

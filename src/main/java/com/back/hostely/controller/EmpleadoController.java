@@ -74,6 +74,7 @@ public class EmpleadoController {
                 dto.setPaisId(u.getPaisId());
                 dto.setPasswordHash(u.getPasswordHash());
                 dto.setFotoPerfil(u.getFotoPerfil());
+                dto.setVerificado(u.getVerificado());
                 dto.setCreadoEn(u.getCreadoEn());
 
                 // datos de usuario_empleado
@@ -120,6 +121,7 @@ public class EmpleadoController {
         usuario.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
         usuario.setPaisId(dto.getPaisId());
         usuario.setNegocioId(dto.getNegocioId());
+        usuario.setVerificado(dto.getVerificado());
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
             String url = s3Service.uploadFile(fotoPerfil, "perfil");
