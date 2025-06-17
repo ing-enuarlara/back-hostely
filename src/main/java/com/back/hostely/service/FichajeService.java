@@ -39,7 +39,7 @@ public class FichajeService {
     }
 
     public Optional<Fichaje> buscarPorEnlace(String enlace) {
-        return repository.findByFichEnlace(enlace);
+        return repository.findByEnlace(enlace);
     }
 
     public Fichaje registrar(Fichaje fichaje) {

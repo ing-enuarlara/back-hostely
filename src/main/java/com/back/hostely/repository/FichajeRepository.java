@@ -14,5 +14,5 @@ public interface FichajeRepository extends JpaRepository<Fichaje, Integer> {
     List<Fichaje> findBySedeId(Integer sedeId);
     List<Fichaje> findByNegocioId(Integer negocioId);
 
-    Optional<Fichaje> findByFichEnlace(String fichEnlace);
+    Optional<Fichaje> findByEnlace(String enlace);
 }
