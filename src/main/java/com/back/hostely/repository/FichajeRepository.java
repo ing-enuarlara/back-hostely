@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface FichajeRepository extends JpaRepository<Fichaje, Integer> {
     List<Fichaje> findByUsuarioId(Integer usuarioId);
+    List<Fichaje> findByPuestoId(Integer puestoId);
     List<Fichaje> findBySedeId(Integer sedeId);
+    List<Fichaje> findByNegocioId(Integer negocioId);
 }

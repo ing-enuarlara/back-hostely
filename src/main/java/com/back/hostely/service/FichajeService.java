@@ -26,8 +26,16 @@ public class FichajeService {
         return repository.findByUsuarioId(usuarioId);
     }
 
+    public List<Fichaje> buscarPorPuesto(Integer puestoId) {
+        return repository.findByPuestoId(puestoId);
+    }
+
     public List<Fichaje> buscarPorSede(Integer sedeId) {
         return repository.findBySedeId(sedeId);
+    }
+
+    public List<Fichaje> buscarPorNegocio(Integer negocioId) {
+        return repository.findByNegocioId(negocioId);
     }
 
     public Fichaje registrar(Fichaje fichaje) {

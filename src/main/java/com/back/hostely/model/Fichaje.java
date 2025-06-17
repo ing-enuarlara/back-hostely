@@ -14,8 +14,14 @@ public class Fichaje {
     @Column(name = "fich_usuario", nullable = false)
     private Integer usuarioId;
 
+    @Column(name = "fich_puesto", nullable = false)
+    private Integer puestoId;
+
     @Column(name = "fich_sede", nullable = false)
     private Integer sedeId;
+
+    @Column(name = "fich_negocio", nullable = false)
+    private Integer negocioId;
 
     @Column(name = "fich_tipo", nullable = false)
     private String tipo; // ENTRADA o SALIDA
@@ -36,8 +42,14 @@ public class Fichaje {
     public Integer getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Integer usuarioId) { this.usuarioId = usuarioId; }
 
+    public Integer getPuestoId() { return puestoId; }
+    public void setPuestoId(Integer puestoId) { this.puestoId = puestoId; }
+
     public Integer getSedeId() { return sedeId; }
     public void setSedeId(Integer sedeId) { this.sedeId = sedeId; }
+
+    public Integer getNegocioId() { return negocioId; }
+    public void setNegocioId(Integer negocioId) { this.negocioId = negocioId; }
 
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }

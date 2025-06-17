@@ -31,9 +31,19 @@ public class FichajeController {
         return service.buscarPorUsuario(usuarioId);
     }
 
+    @GetMapping("/puesto/{puestoId}")
+    public List<Fichaje> porPuesto(@PathVariable Integer puestoId) {
+        return service.buscarPorPuesto(puestoId);
+    }
+
     @GetMapping("/sede/{sedeId}")
     public List<Fichaje> porSede(@PathVariable Integer sedeId) {
         return service.buscarPorSede(sedeId);
+    }
+
+    @GetMapping("/negocio/{negocioId}")
+    public List<Fichaje> porNegocio(@PathVariable Integer negocioId) {
+        return service.buscarPorNegocio(negocioId);
     }
 
     @PostMapping
