@@ -23,6 +23,14 @@ public class EmpleadoListDTO {
     private String estado;
     private String transportePropio;
 
+    private String puesto;
+    private String fechaContratacion;
+    private String numeroEmpleado;
+    private String tipoContrato;
+    private Double rating;
+    private Integer horasTrabajadas;
+    private Integer diasLibres;
+
     private List<RolDTO> roles;
 
     // Getters y Setters
@@ -73,6 +81,27 @@ public class EmpleadoListDTO {
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }
+
+    public String getPuesto() { return puesto; }
+    public void setPuesto(String puesto) { this.puesto = puesto; }
+
+    public String getFechaContratacion() { return fechaContratacion; }
+    public void setFechaContratacion(String fechaContratacion) { this.fechaContratacion = fechaContratacion; }
+
+    public String getNumeroEmpleado() { return numeroEmpleado; }
+    public void setNumeroEmpleado(String numeroEmpleado) { this.numeroEmpleado = numeroEmpleado; }
+
+    public String getTipoContrato() { return tipoContrato; }
+    public void setTipoContrato(String tipoContrato) { this.tipoContrato = tipoContrato; }
+
+    public Double getRating() { return rating; }
+    public void setRating(Double rating) { this.rating = rating; }
+
+    public Integer getHorasTrabajadas() { return horasTrabajadas; }
+    public void setHorasTrabajadas(Integer horasTrabajadas) { this.horasTrabajadas = horasTrabajadas; }
+
+    public Integer getDiasLibres() { return diasLibres; }
+    public void setDiasLibres(Integer diasLibres) { this.diasLibres = diasLibres; }
 
     public List<RolDTO> getRoles() { return roles; }
     public void setRoles(List<RolDTO> roles) { this.roles = roles; }

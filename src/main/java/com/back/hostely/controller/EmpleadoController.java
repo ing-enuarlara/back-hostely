@@ -102,6 +102,57 @@ public class EmpleadoController {
         return empleados;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerEmpleadoPorId(@PathVariable Integer id) {
+        Optional<Usuario> optUsuario = usuarioRepository.findById(id);
+        if (optUsuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empleado no encontrado");
+        }
+
+        Usuario u = optUsuario.get();
+        EmpleadoListDTO dto = new EmpleadoListDTO();
+
+        dto.setId(u.getId());
+        dto.setNombre(u.getNombre());
+        dto.setEdad(u.getEdad());
+        dto.setDireccion(u.getDireccion());
+        dto.setEstadoSocial(u.getEstadoSocial());
+        dto.setEmail(u.getEmail());
+        dto.setTelefono(u.getTelefono());
+        dto.setNegocioId(u.getNegocioId());
+        dto.setPaisId(u.getPaisId());
+        dto.setPasswordHash(u.getPasswordHash());
+        dto.setFotoPerfil(u.getFotoPerfil());
+        dto.setVerificado(u.getVerificado());
+        dto.setCreadoEn(u.getCreadoEn());
+        dto.setPuesto("Cocinero"); // temporal o real si tienes ese dato
+        dto.setFechaContratacion(u.getCreadoEn()); // puedes sacar esto de `creadoEn` si no tienes otra
+        dto.setNumeroEmpleado("10000"+u.getId()); // puedes generar uno temporal como "10000" + id
+        dto.setTipoContrato("Full-time"); // puedes guardar este dato en UsuarioEmpleado
+        dto.setRating(4.2); // por ahora puedes simularlo
+        dto.setHorasTrabajadas(1396); // simulación también
+        dto.setDiasLibres(5); // simulación
+
+        List<UsuarioEmpleado> rel = usuarioEmpleadoRepository.findByUsuarioId(u.getId());
+        if (!rel.isEmpty()) {
+            UsuarioEmpleado ue = rel.get(0);
+            dto.setEstado(ue.getEstado());
+            dto.setDisponibilidad(ue.getDisponibilidad());
+            dto.setTransportePropio(ue.getTransportePropio());
+        }
+
+        List<UsuarioRol> rolesDelUsuario = usuarioRolRepository.findByUsuarioId(u.getId());
+        List<RolDTO> rolesDTO = new ArrayList<>();
+        for (UsuarioRol r : rolesDelUsuario) {
+            rolRepository.findById(r.getRolId()).ifPresent(rol -> {
+                rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre()));
+            });
+        }
+        dto.setRoles(rolesDTO);
+
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping(value = "/crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> register(@RequestPart("empleado") @Valid EmpleadoDTO dto,
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) throws IOException {
