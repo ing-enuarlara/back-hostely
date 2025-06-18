@@ -48,12 +48,12 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/fecha/{fechaInicio}")
+    @GetMapping("/fecha-inicio/{fechaInicio}")
     public List<Task> buscarPorFechaInicio(@PathVariable LocalDateTime fechaInicio) {
         return taskService.buscarPorFechaInicio(fechaInicio);
     }
 
-    @GetMapping("/fecha/{fechaFin}")
+    @GetMapping("/fecha-fin/{fechaFin}")
     public List<Task> buscarPorFechaFin(@PathVariable LocalDateTime fechaFin) {
         return taskService.buscarPorFechaFin(fechaFin);
     }
@@ -90,6 +90,7 @@ public class TaskController {
         }
 
         Task Task = new Task();
+        Task.setNombre(dto.getNombre());
         Task.setFechaInicio(dto.getFechaInicio());
         Task.setFechaFin(dto.getFechaFin());
         Task.setEstado(dto.getEstado() != null ? dto.getEstado() : TaskEstado.PENDIENTE);
@@ -136,6 +137,7 @@ public class TaskController {
 
         // Actualizar los campos
         Task Task = optTask.get();
+        Task.setNombre(dto.getNombre());
         Task.setFechaInicio(dto.getFechaInicio());
         Task.setFechaFin(dto.getFechaFin());
         Task.setEstado(dto.getEstado());

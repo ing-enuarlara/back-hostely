@@ -19,16 +19,16 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     List<Task> findByEstado(TaskEstado estado);
 
-    @Query("SELECT t FROM task t WHERE t.usuario.id = :usuarioId")
+    @Query("SELECT t FROM Task t WHERE t.usuario.id = :usuarioId")
     List<Task> findByUsuarioId(@Param("usuarioId") Integer usuarioId);
 
-    @Query("SELECT t FROM task t WHERE t.sede.id = :sedeId")
+    @Query("SELECT t FROM Task t WHERE t.sede.id = :sedeId")
     List<Task> findBySedeId(@Param("sedeId") Integer sedeId);
 
-    @Query("SELECT t FROM task t WHERE t.negocio.id = :negocioId")
+    @Query("SELECT t FROM Task t WHERE t.negocio.id = :negocioId")
     List<Task> findByNegocioId(@Param("negocioId") Integer negocioId);
 
-    @Query("SELECT t FROM task t WHERE t.creadoPor.id = :creadorId")
+    @Query("SELECT t FROM Task t WHERE t.creadoPor.id = :creadorId")
     List<Task> findByCreadoPorId(@Param("creadorId") Integer creadorId);
 
     @Query("SELECT t FROM Task t WHERE t.usuario.id = :usuarioId AND " +
