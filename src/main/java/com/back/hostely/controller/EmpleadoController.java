@@ -127,7 +127,7 @@ public class EmpleadoController {
         dto.setCreadoEn(u.getCreadoEn());
         dto.setPuesto("Cocinero"); // temporal o real si tienes ese dato
         dto.setFechaContratacion(u.getCreadoEn()); // puedes sacar esto de `creadoEn` si no tienes otra
-        dto.setNumeroEmpleado("10000"+u.getId()); // puedes generar uno temporal como "10000" + id
+        dto.setNumeroEmpleado("10000" + u.getId()); // puedes generar uno temporal como "10000" + id
         dto.setTipoContrato("Full-time"); // puedes guardar este dato en UsuarioEmpleado
         dto.setRating(4.2); // por ahora puedes simularlo
         dto.setHorasTrabajadas(1396); // simulación también
@@ -225,6 +225,10 @@ public class EmpleadoController {
         }
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
+            if (usuario.getFotoPerfil() != null && !usuario.getFotoPerfil().isBlank()) {
+                s3Service.deleteFileFromUrl(usuario.getFotoPerfil());
+            }
+
             String url = s3Service.uploadFile(fotoPerfil, "perfil");
             usuario.setFotoPerfil(url);
         }
