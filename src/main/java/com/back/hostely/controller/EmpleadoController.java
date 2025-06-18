@@ -245,4 +245,28 @@ public class EmpleadoController {
 
         return ResponseEntity.ok("Empleado actualizado con éxito");
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarEmpleado(@PathVariable Integer id) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empleado no encontrado");
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        if (usuario.getFotoPerfil() != null && !usuario.getFotoPerfil().isBlank()) {
+            s3Service.deleteFileFromUrl(usuario.getFotoPerfil());
+        }
+
+        List<UsuarioRol> roles = usuarioRolRepository.findByUsuarioId(id);
+        usuarioRolRepository.deleteAll(roles);
+
+        List<UsuarioEmpleado> relacionesEmpleado = usuarioEmpleadoRepository.findByUsuarioId(id);
+        usuarioEmpleadoRepository.deleteAll(relacionesEmpleado);
+
+        usuarioRepository.deleteById(id);
+
+        return ResponseEntity.ok("Empleado eliminado con éxito");
+    }
 }
