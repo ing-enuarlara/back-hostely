@@ -45,4 +45,9 @@ public class RolController {
     public void eliminar(@PathVariable Integer id) {
         service.eliminar(id);
     }
+
+    @GetMapping("/negocioConGlobales/{negocioId}")
+    public List<Rol> buscarConGlobales(@PathVariable Integer negocioId) {
+        return service.buscarConGlobales(negocioId);
+    }
 }

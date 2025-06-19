@@ -41,4 +41,9 @@ public class RolService {
     public void eliminar(Integer id) {
         repository.deleteById(id);
     }
+
+    public List<Rol> buscarConGlobales(Integer negocioId) {
+        List<Integer> idsGlobales = List.of(2, 3, 4);
+        return repository.findByNegocioWithGlobal(negocioId, idsGlobales);
+    }
 }
