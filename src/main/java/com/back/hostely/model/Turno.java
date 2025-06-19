@@ -29,7 +29,7 @@ public class Turno {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "turn_estado", nullable = false)
-    private TurnoEstado estado = TurnoEstado.PENDIENTE;
+    private TurnoEstado estado = TurnoEstado.ASIGNADO;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turn_usuario", nullable = false)

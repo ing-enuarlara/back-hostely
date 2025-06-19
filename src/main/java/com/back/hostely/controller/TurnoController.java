@@ -99,7 +99,7 @@ public class TurnoController {
         turno.setFecha(dto.getFecha());
         turno.setInicio(dto.getInicio());
         turno.setFin(dto.getFin());
-        turno.setEstado(dto.getEstado() != null ? dto.getEstado() : TurnoEstado.PENDIENTE);
+        turno.setEstado(dto.getEstado() != null ? dto.getEstado() : TurnoEstado.ASIGNADO);
         turno.setDescripcion(dto.getDescripcion());
 
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());

@@ -1,7 +1,7 @@
 package com.back.hostely.enums;
 
 public enum TurnoEstado {
-    PENDIENTE,
+    ASIGNADO,
     RETRASO,
     EN_CURSO,
     FINALIZADO,
