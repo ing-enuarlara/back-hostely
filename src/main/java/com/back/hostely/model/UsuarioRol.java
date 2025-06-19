@@ -23,19 +23,76 @@ public class UsuarioRol {
     @Column(name = "usrl_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usrl_uss", insertable = false, updatable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usrl_rol", insertable = false, updatable = false)
+    private Rol rol;
+
+    public boolean isPrincipalActivo() {
+        return "SI".equalsIgnoreCase(principal);
+    }
+
+    public void setPrincipalActivo(boolean activo) {
+        this.principal = activo ? "SI" : "NO";
+    }
+
     // Getters y Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public Integer getUsuarioId() { return usuarioId; }
-    public void setUsuarioId(Integer usuarioId) { this.usuarioId = usuarioId; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public Integer getRolId() { return rolId; }
-    public void setRolId(Integer rolId) { this.rolId = rolId; }
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
 
-    public String getPrincipal() { return principal; }
-    public void setPrincipal(String principal) { this.principal = principal; }
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
 
-    public String getCreadoEn() { return creadoEn; }
-    public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }
+    public Integer getRolId() {
+        return rolId;
+    }
+
+    public void setRolId(Integer rolId) {
+        this.rolId = rolId;
+    }
+
+    public String getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(String principal) {
+        this.principal = principal;
+    }
+
+    public String getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(String creadoEn) {
+        this.creadoEn = creadoEn;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
 }

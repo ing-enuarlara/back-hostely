@@ -1,6 +1,7 @@
 package com.back.hostely.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -47,43 +48,121 @@ public class Usuario {
     @Column(name = "uss_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<UsuarioRol> roles;
+
+    public Rol getRolPrincipal() {
+        if (roles == null)
+            return null;
+        return roles.stream()
+                .filter(ur -> ur.isPrincipalActivo())
+                .map(UsuarioRol::getRol)
+                .findFirst()
+                .orElse(null);
+    }
+
     // Getters y Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getFotoPerfil() { return fotoPerfil; }
-    public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public Integer getEdad() { return edad; }
-    public void setEdad(Integer edad) { this.edad = edad; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
 
-    public Integer getPaisId() { return paisId; }
-    public void setPaisId(Integer paisId) { this.paisId = paisId; }
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public Integer getEdad() {
+        return edad;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
 
-    public String getEstadoSocial() { return estadoSocial; }
-    public void setEstadoSocial(String estadoSocial) { this.estadoSocial = estadoSocial; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public Integer getNegocioId() { return negocioId; }
-    public void setNegocioId(Integer negocioId) { this.negocioId = negocioId; }
+    public Integer getPaisId() {
+        return paisId;
+    }
 
-    public String getVerificado() { return verificado; }
-    public void setVerificado(String verificado) { this.verificado = verificado; }
+    public void setPaisId(Integer paisId) {
+        this.paisId = paisId;
+    }
 
-    public String getCreadoEn() { return creadoEn; }
-    public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEstadoSocial() {
+        return estadoSocial;
+    }
+
+    public void setEstadoSocial(String estadoSocial) {
+        this.estadoSocial = estadoSocial;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public Integer getNegocioId() {
+        return negocioId;
+    }
+
+    public void setNegocioId(Integer negocioId) {
+        this.negocioId = negocioId;
+    }
+
+    public String getVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(String verificado) {
+        this.verificado = verificado;
+    }
+
+    public String getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(String creadoEn) {
+        this.creadoEn = creadoEn;
+    }
 }
