@@ -63,6 +63,10 @@ public class TurnoService {
         return !turnoRepository.verificarConflictos(fecha, inicio, fin, usuarioId).isEmpty();
     }
 
+    public boolean hayConflictoHorarioEditar(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId) {
+        return !turnoRepository.verificarConflictosEdit(fecha, inicio, fin, usuarioId, turnoId).isEmpty();
+    }
+
     public Turno guardar(Turno turno) {
         return turnoRepository.save(turno);
     }

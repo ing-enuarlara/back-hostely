@@ -44,10 +44,28 @@ public class TurnoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
-        return turnoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<TurnoDTO> obtenerTurno(@PathVariable Integer id) {
+        Optional<Turno> optTurno = turnoService.buscarPorId(id);
+
+        if (optTurno.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Turno turno = optTurno.get();
+        TurnoDTO dto = new TurnoDTO();
+
+        dto.setId(turno.getId());
+        dto.setUsuarioId(turno.getUsuario().getId());
+        dto.setSedeId(turno.getSede().getId());
+        dto.setNegocioId(turno.getNegocio().getId());
+        dto.setFecha(turno.getFecha());
+        dto.setInicio(turno.getInicio());
+        dto.setFin(turno.getFin());
+        dto.setEstado(turno.getEstado());
+        dto.setDescripcion(turno.getDescripcion());
+        dto.setCreadoPorId(turno.getCreadoPor().getId());
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/fecha/{fecha}")
@@ -121,7 +139,20 @@ public class TurnoController {
         turno.setNegocio(negocioOpt.get());
         turno.setCreadoPor(creadorOpt.get());
 
-        return ResponseEntity.ok(turnoService.guardar(turno));
+        Turno guardado = turnoService.guardar(turno);
+        TurnoDTO respuesta = new TurnoDTO();
+        respuesta.setId(guardado.getId());
+        respuesta.setFecha(guardado.getFecha());
+        respuesta.setInicio(guardado.getInicio());
+        respuesta.setFin(guardado.getFin());
+        respuesta.setEstado(guardado.getEstado());
+        respuesta.setUsuarioId(dto.getUsuarioId());
+        respuesta.setSedeId(dto.getSedeId());
+        respuesta.setNegocioId(dto.getNegocioId());
+        respuesta.setDescripcion(dto.getDescripcion());
+        respuesta.setCreadoPorId(dto.getCreadoPorId());
+
+        return ResponseEntity.ok(respuesta);
     }
 
     @PutMapping("/{id}")
@@ -134,15 +165,14 @@ public class TurnoController {
         // Validar existencia de entidades relacionadas
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
         Optional<Sede> sedeOpt = sedeService.buscarPorId(dto.getSedeId());
-        Optional<Negocio> negocioOpt = negocioService.buscarPorId(dto.getNegocioId());
-        Optional<Usuario> creadorOpt = usuarioService.buscarPorId(dto.getCreadoPorId());
 
-        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty() || negocioOpt.isEmpty() || creadorOpt.isEmpty()) {
+        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Alguna entidad relacionada no existe.");
         }
 
         // Verificar conflicto de horario
-        if (turnoService.hayConflictoHorario(dto.getFecha(), dto.getInicio(), dto.getFin(), dto.getUsuarioId())) {
+        if (turnoService.hayConflictoHorarioEditar(dto.getFecha(), dto.getInicio(), dto.getFin(), dto.getUsuarioId(),
+                dto.getId())) {
             return ResponseEntity.badRequest().body("Conflicto de horario detectado.");
         }
 
@@ -151,17 +181,29 @@ public class TurnoController {
         turno.setFecha(dto.getFecha());
         turno.setInicio(dto.getInicio());
         turno.setFin(dto.getFin());
-        turno.setEstado(dto.getEstado());
+        turno.setEstado(turno.getEstado());
         turno.setUsuario(usuarioOpt.get());
         turno.setSede(sedeOpt.get());
-        turno.setNegocio(negocioOpt.get());
         turno.setDescripcion(dto.getDescripcion());
-        turno.setCreadoPor(creadorOpt.get());
 
-        return ResponseEntity.ok(turnoService.guardar(turno));
+        Turno actualizado = turnoService.guardar(turno);
+
+        TurnoDTO respuesta = new TurnoDTO();
+        respuesta.setId(actualizado.getId());
+        respuesta.setFecha(actualizado.getFecha());
+        respuesta.setInicio(actualizado.getInicio());
+        respuesta.setFin(actualizado.getFin());
+        respuesta.setEstado(actualizado.getEstado());
+        respuesta.setUsuarioId(actualizado.getUsuario().getId());
+        respuesta.setSedeId(actualizado.getSede().getId());
+        respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
+        respuesta.setDescripcion(actualizado.getDescripcion());
+        respuesta.setCreadoPorId(actualizado.getCreadoPor() != null ? actualizado.getCreadoPor().getId() : null);
+
+        return ResponseEntity.ok(respuesta);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         if (turnoService.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();

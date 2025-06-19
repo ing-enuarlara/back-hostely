@@ -1,6 +1,7 @@
 package com.back.hostely.dto;
 
 import com.back.hostely.enums.TurnoEstado;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -9,7 +10,10 @@ public class TurnoDTO {
 
     private Integer id;
     private Date fecha;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Time inicio;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Time fin;
     private TurnoEstado estado;
     private Integer usuarioId;

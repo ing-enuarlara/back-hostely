@@ -38,4 +38,9 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer> {
             "((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
             "(t.inicio BETWEEN :inicio AND :fin))")
     List<Turno> verificarConflictos(Date fecha, Time inicio, Time fin, Integer usuarioId);
+
+    @Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND t.id <> :turnoId AND " +
+            "((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
+            "(t.inicio BETWEEN :inicio AND :fin))")
+    List<Turno> verificarConflictosEdit(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId);
 }
