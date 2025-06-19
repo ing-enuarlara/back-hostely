@@ -1,6 +1,7 @@
 package com.back.hostely.controller;
 
 import com.back.hostely.dto.EmpleadoDTO;
+import com.back.hostely.dto.UsuarioLoginDTO;
 import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Usuario;
 import com.back.hostely.model.UsuarioEmpleado;
@@ -126,9 +127,17 @@ public class AuthController {
             });
         }
 
+        UsuarioLoginDTO usuarioDTO = new UsuarioLoginDTO();
+        usuarioDTO.setId(usuario.getId());
+        usuarioDTO.setNombre(usuario.getNombre());
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setFotoPerfil(usuario.getFotoPerfil());
+        usuarioDTO.setNegocioId(usuario.getNegocioId());
+        usuarioDTO.setVerificado(usuario.getVerificado());
+
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("usuario", usuario);
+        response.put("usuario", usuarioDTO);
         response.put("negocio", negocioOpt.orElse(null));
         response.put("roles", roles);
         return ResponseEntity.ok(response);
