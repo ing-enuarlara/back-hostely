@@ -1,63 +1,72 @@
 package com.back.hostely.model;
 
-import com.back.hostely.enums.TaskEstado;
+import com.back.hostely.enums.TaskRecurrenteFrecuencia;
+import com.back.hostely.enums.TaskRecurrenteEstado;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "tasks_recurrentes")
+public class TaskRecurrente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tasks_id")
+    @Column(name = "tare_id")
     private Integer id;
 
-    @Column(name = "tasks_nombre", length = 255)
+    @Column(name = "tare_nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "tasks_descripcion", length = 255)
+    @Column(name = "tare_descripcion")
     private String descripcion;
 
-    @Column(name = "tasks_fecha_inicio")
-    private LocalDateTime fechaInicio;
+    @Column(name = "tare_fecha_inicio")
+    private LocalDate fechaInicio;
 
-    @Column(name = "tasks_fecha_fin")
-    private LocalDateTime fechaFin;
+    @Column(name = "tare_fecha_fin")
+    private LocalDate fechaFin;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tasks_estado", nullable = false)
-    private TaskEstado estado = TaskEstado.PENDIENTE;
+    @Column(name = "tare_frecuencia", nullable = false)
+    private TaskRecurrenteFrecuencia frecuencia;
+
+    @Column(name = "tare_dia_semana")
+    private String diaSemana; // Valida solo si frecuencia = SEMANAL
+
+    @Column(name = "tare_hora")
+    private LocalTime hora;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tare_estado", nullable = false)
+    private TaskRecurrenteEstado estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_usuario", nullable = false)
+    @JoinColumn(name = "tare_usuario", nullable = false)
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_recurrente_id")
-    private TaskRecurrente tareaRecurrente;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_sede", nullable = false)
+    @JoinColumn(name = "tare_sede", nullable = false)
     private Sede sede;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_negocio", nullable = false)
+    @JoinColumn(name = "tare_negocio", nullable = false)
     private Negocio negocio;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_created_by", nullable = false)
+    @JoinColumn(name = "tare_created_by", nullable = false)
     private Usuario creadoPor;
 
     @CreationTimestamp
-    @Column(name = "tasks_created_at", updatable = false)
+    @Column(name = "tare_created_at", updatable = false)
     private LocalDateTime creadoEn;
 
     @UpdateTimestamp
-    @Column(name = "tasks_updated_at")
+    @Column(name = "tare_updated_at")
     private LocalDateTime actualizadoEn;
 
     public Integer getId() {
@@ -84,27 +93,51 @@ public class Task {
         this.descripcion = descripcion;
     }
 
-    public LocalDateTime getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDateTime fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDateTime getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(LocalDateTime fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public TaskEstado getEstado() {
+    public TaskRecurrenteFrecuencia getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(TaskRecurrenteFrecuencia frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+
+    public String getDiaSemana() {
+        return diaSemana;
+    }
+
+    public void setDiaSemana(String diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    public LocalTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+
+    public TaskRecurrenteEstado getEstado() {
         return estado;
     }
 
-    public void setEstado(TaskEstado estado) {
+    public void setEstado(TaskRecurrenteEstado estado) {
         this.estado = estado;
     }
 
@@ -114,14 +147,6 @@ public class Task {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public TaskRecurrente getTareaRecurrente() {
-        return tareaRecurrente;
-    }
-
-    public void setTareaRecurrente(TaskRecurrente tareaRecurrente) {
-        this.tareaRecurrente = tareaRecurrente;
     }
 
     public Sede getSede() {
@@ -163,4 +188,6 @@ public class Task {
     public void setActualizadoEn(LocalDateTime actualizadoEn) {
         this.actualizadoEn = actualizadoEn;
     }
+
+    // Getters y setters completos (puedo generarlos si los necesitas ahora)
 }

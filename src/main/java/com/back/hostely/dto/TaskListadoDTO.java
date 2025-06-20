@@ -13,6 +13,7 @@ public class TaskListadoDTO {
     private String usuarioFoto;
     private Integer usuarioRolId;
     private String usuarioRolNombre;
+    private Integer tareaRecurrenteId;
 
     public TaskListadoDTO() {
     }
@@ -31,6 +32,17 @@ public class TaskListadoDTO {
                 this.usuarioRolNombre = task.getUsuario().getRolPrincipal().getNombre();
             }
         }
+        if (task.getTareaRecurrente() != null) {
+            this.tareaRecurrenteId = task.getTareaRecurrente().getId();
+        }
+    }
+
+    public Integer getTareaRecurrenteId() {
+        return tareaRecurrenteId;
+    }
+
+    public void setTareaRecurrenteId(Integer tareaRecurrenteId) {
+        this.tareaRecurrenteId = tareaRecurrenteId;
     }
 
     public Integer getId() {
