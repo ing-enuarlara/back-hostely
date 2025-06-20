@@ -8,7 +8,7 @@ import com.back.hostely.service.TaskRecurrenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import jakarta.annotation.PostConstruct;
+// import jakarta.annotation.PostConstruct;
 
 import java.time.*;
 import java.util.List;
@@ -63,8 +63,8 @@ public class TaskRecurrenteGenerator {
         }
     }
 
-    @PostConstruct
-    public void testManual() {
-        generarTareasDeHoy(); // solo durante pruebas
-    }
+    // @PostConstruct
+    // public void testManual() {
+    //     generarTareasDeHoy(); // solo durante pruebas
+    // }
 }
