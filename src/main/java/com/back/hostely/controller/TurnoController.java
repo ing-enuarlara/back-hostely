@@ -2,6 +2,7 @@ package com.back.hostely.controller;
 
 import com.back.hostely.dto.TurnoDTO;
 import com.back.hostely.dto.TurnoListadoDTO;
+import com.back.hostely.dto.TurnoUsuarioDTO;
 import com.back.hostely.enums.TurnoEstado;
 import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Sede;
@@ -89,8 +90,10 @@ public class TurnoController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public List<Turno> buscarPorUsuario(@PathVariable Integer usuarioId) {
-        return turnoService.buscarPorUsuario(usuarioId);
+    public List<TurnoUsuarioDTO> buscarPorUsuario(@PathVariable Integer usuarioId) {
+        return turnoService.buscarPorUsuario(usuarioId).stream()
+                .map(TurnoUsuarioDTO::new)
+                .toList();
     }
 
     @GetMapping("/sede/{sedeId}")
