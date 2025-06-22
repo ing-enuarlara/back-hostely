@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 public class TaskListadoDTO {
     private Integer id;
+    private String nombre;
+    private String descripcion;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private TaskEstado estado;
@@ -14,15 +16,24 @@ public class TaskListadoDTO {
     private Integer usuarioRolId;
     private String usuarioRolNombre;
     private Integer tareaRecurrenteId;
+    private String creadorNombre;
+    private String creadorFoto;
+    private Integer creadorRolId;
+    private String creadorRolNombre;
+    private LocalDateTime creadoEn;
 
     public TaskListadoDTO() {
     }
 
     public TaskListadoDTO(com.back.hostely.model.Task task) {
         this.id = task.getId();
+        this.nombre = task.getNombre();
+        this.descripcion = task.getDescripcion();
         this.fechaInicio = task.getFechaInicio();
         this.fechaFin = task.getFechaFin();
         this.estado = task.getEstado();
+        this.tareaRecurrenteId = task.getTareaRecurrente() != null ? task.getTareaRecurrente().getId() : null;
+        this.creadoEn = task.getCreadoEn();
 
         if (task.getUsuario() != null) {
             this.usuarioNombre = task.getUsuario().getNombre();
@@ -32,17 +43,15 @@ public class TaskListadoDTO {
                 this.usuarioRolNombre = task.getUsuario().getRolPrincipal().getNombre();
             }
         }
-        if (task.getTareaRecurrente() != null) {
-            this.tareaRecurrenteId = task.getTareaRecurrente().getId();
+
+        if (task.getCreadoPor() != null) {
+            this.creadorNombre = task.getCreadoPor().getNombre();
+            this.creadorFoto = task.getCreadoPor().getFotoPerfil();
+            if (task.getCreadoPor().getRolPrincipal() != null) {
+                this.creadorRolId = task.getCreadoPor().getRolPrincipal().getId();
+                this.creadorRolNombre = task.getCreadoPor().getRolPrincipal().getNombre();
+            }
         }
-    }
-
-    public Integer getTareaRecurrenteId() {
-        return tareaRecurrenteId;
-    }
-
-    public void setTareaRecurrenteId(Integer tareaRecurrenteId) {
-        this.tareaRecurrenteId = tareaRecurrenteId;
     }
 
     public Integer getId() {
@@ -51,6 +60,22 @@ public class TaskListadoDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public LocalDateTime getFechaInicio() {
@@ -107,5 +132,53 @@ public class TaskListadoDTO {
 
     public void setUsuarioRolNombre(String usuarioRolNombre) {
         this.usuarioRolNombre = usuarioRolNombre;
+    }
+
+    public Integer getTareaRecurrenteId() {
+        return tareaRecurrenteId;
+    }
+
+    public void setTareaRecurrenteId(Integer tareaRecurrenteId) {
+        this.tareaRecurrenteId = tareaRecurrenteId;
+    }
+
+    public String getCreadorNombre() {
+        return creadorNombre;
+    }
+
+    public void setCreadorNombre(String creadorNombre) {
+        this.creadorNombre = creadorNombre;
+    }
+
+    public String getCreadorFoto() {
+        return creadorFoto;
+    }
+
+    public void setCreadorFoto(String creadorFoto) {
+        this.creadorFoto = creadorFoto;
+    }
+
+    public Integer getCreadorRolId() {
+        return creadorRolId;
+    }
+
+    public void setCreadorRolId(Integer creadorRolId) {
+        this.creadorRolId = creadorRolId;
+    }
+
+    public String getCreadorRolNombre() {
+        return creadorRolNombre;
+    }
+
+    public void setCreadorRolNombre(String creadorRolNombre) {
+        this.creadorRolNombre = creadorRolNombre;
+    }
+
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
     }
 }

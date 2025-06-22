@@ -1,14 +1,17 @@
 package com.back.hostely.controller;
 
 import com.back.hostely.dto.TaskDTO;
+import com.back.hostely.dto.TaskListadoDTO;
 import com.back.hostely.enums.TaskEstado;
 import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Sede;
 import com.back.hostely.model.Task;
+import com.back.hostely.model.TaskRecurrente;
 import com.back.hostely.model.Usuario;
 import com.back.hostely.service.NegocioService;
 import com.back.hostely.service.SedeService;
 import com.back.hostely.service.TaskService;
+import com.back.hostely.service.TaskRecurrenteService;
 import com.back.hostely.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -36,24 +39,46 @@ public class TaskController {
     @Autowired
     private NegocioService negocioService;
 
+    @Autowired
+    private TaskRecurrenteService taskRecurrenteService;
+
     @GetMapping
     public List<Task> listarTodos() {
         return taskService.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
-        return taskService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<TaskDTO> obtenerTask(@PathVariable Integer id) {
+        Optional<Task> optTask = taskService.buscarPorId(id);
+
+        if (optTask.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Task task = optTask.get();
+        TaskDTO dto = new TaskDTO();
+
+        dto.setId(task.getId());
+        dto.setNombre(task.getNombre());
+        dto.setUsuarioId(task.getUsuario().getId());
+        dto.setSedeId(task.getSede().getId());
+        dto.setNegocioId(task.getNegocio().getId());
+        dto.setFechaInicio(task.getFechaInicio());
+        dto.setFechaFin(task.getFechaFin());
+        dto.setEstado(task.getEstado());
+        dto.setDescripcion(task.getDescripcion());
+        dto.setCreadoPorId(task.getCreadoPor().getId());
+        dto.setTareaRecurrenteId(task.getTareaRecurrente() != null ? task.getTareaRecurrente().getId() : null);
+
+        return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/fecha-inicio/{fechaInicio}")
+    @GetMapping("/fechaInicio/{fecha}")
     public List<Task> buscarPorFechaInicio(@PathVariable LocalDateTime fechaInicio) {
         return taskService.buscarPorFechaInicio(fechaInicio);
     }
 
-    @GetMapping("/fecha-fin/{fechaFin}")
+    @GetMapping("/fechaFin/{fecha}")
     public List<Task> buscarPorFechaFin(@PathVariable LocalDateTime fechaFin) {
         return taskService.buscarPorFechaFin(fechaFin);
     }
@@ -69,13 +94,17 @@ public class TaskController {
     }
 
     @GetMapping("/sede/{sedeId}")
-    public List<Task> buscarPorSede(@PathVariable Integer sedeId) {
-        return taskService.buscarPorSede(sedeId);
+    public List<TaskListadoDTO> listarPorSede(@PathVariable Integer sedeId) {
+        return taskService.buscarPorSede(sedeId).stream()
+                .map(TaskListadoDTO::new)
+                .toList();
     }
 
     @GetMapping("/negocio/{negocioId}")
-    public List<Task> buscarPorNegocio(@PathVariable Integer negocioId) {
-        return taskService.buscarPorNegocio(negocioId);
+    public List<TaskListadoDTO> listarPorNegocio(@PathVariable Integer negocioId) {
+        return taskService.buscarPorNegocio(negocioId).stream()
+                .map(TaskListadoDTO::new)
+                .toList();
     }
 
     @GetMapping("/creadoPor/{usuarioId}")
@@ -85,16 +114,16 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<?> crearTask(@Valid @RequestBody TaskDTO dto) {
-        if (taskService.hayConflictoHorario(dto.getFechaInicio(), dto.getFechaFin(), dto.getUsuarioId())) {
-            return ResponseEntity.badRequest().body("Ya existe un Task para ese usuario en ese horario.");
+        if (taskService.hayConflicto(dto.getFechaInicio(), dto.getFechaFin(), dto.getUsuarioId())) {
+            return ResponseEntity.badRequest().body("Ya existe un task para ese usuario en esa fecha.");
         }
 
-        Task Task = new Task();
-        Task.setNombre(dto.getNombre());
-        Task.setFechaInicio(dto.getFechaInicio());
-        Task.setFechaFin(dto.getFechaFin());
-        Task.setEstado(dto.getEstado() != null ? dto.getEstado() : TaskEstado.PENDIENTE);
-        Task.setDescripcion(dto.getDescripcion());
+        Task task = new Task();
+        task.setFechaInicio(dto.getFechaInicio());
+        task.setFechaFin(dto.getFechaFin());
+        task.setEstado(dto.getEstado() != null ? dto.getEstado() : TaskEstado.PENDIENTE);
+        task.setDescripcion(dto.getDescripcion());
+        task.setNombre(dto.getNombre());
 
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
         Optional<Sede> sedeOpt = sedeService.buscarPorId(dto.getSedeId());
@@ -105,12 +134,35 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
 
-        Task.setUsuario(usuarioOpt.get());
-        Task.setSede(sedeOpt.get());
-        Task.setNegocio(negocioOpt.get());
-        Task.setCreadoPor(creadorOpt.get());
+        task.setUsuario(usuarioOpt.get());
+        task.setSede(sedeOpt.get());
+        task.setNegocio(negocioOpt.get());
+        task.setCreadoPor(creadorOpt.get());
 
-        return ResponseEntity.ok(taskService.guardar(Task));
+        if (dto.getTareaRecurrenteId() != null) {
+            Optional<TaskRecurrente> tareaRecurrenteOpt = taskRecurrenteService.buscarPorId(dto.getTareaRecurrenteId());
+            tareaRecurrenteOpt.ifPresent(task::setTareaRecurrente);
+        }
+
+        Task guardado = taskService.guardar(task);
+
+        TaskDTO respuesta = new TaskDTO();
+        respuesta.setId(guardado.getId());
+        respuesta.setFechaInicio(guardado.getFechaInicio());
+        respuesta.setFechaFin(guardado.getFechaFin());
+        respuesta.setEstado(guardado.getEstado());
+        respuesta.setUsuarioId(dto.getUsuarioId());
+        respuesta.setSedeId(dto.getSedeId());
+        respuesta.setNegocioId(dto.getNegocioId());
+        respuesta.setDescripcion(dto.getDescripcion());
+        respuesta.setCreadoPorId(dto.getCreadoPorId());
+        respuesta.setNombre(dto.getNombre());
+
+        if (guardado.getTareaRecurrente() != null) {
+            respuesta.setTareaRecurrenteId(guardado.getTareaRecurrente().getId());
+        }
+
+        return ResponseEntity.ok(respuesta);
     }
 
     @PutMapping("/{id}")
@@ -123,34 +175,42 @@ public class TaskController {
         // Validar existencia de entidades relacionadas
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
         Optional<Sede> sedeOpt = sedeService.buscarPorId(dto.getSedeId());
-        Optional<Negocio> negocioOpt = negocioService.buscarPorId(dto.getNegocioId());
-        Optional<Usuario> creadorOpt = usuarioService.buscarPorId(dto.getCreadoPorId());
 
-        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty() || negocioOpt.isEmpty() || creadorOpt.isEmpty()) {
+        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Alguna entidad relacionada no existe.");
         }
 
-        // Verificar conflicto de horario
-        if (taskService.hayConflictoHorario(dto.getFechaInicio(), dto.getFechaFin(), dto.getUsuarioId())) {
-            return ResponseEntity.badRequest().body("Conflicto de horario detectado.");
+        // Verificar conflicto de fecha
+        if (taskService.hayConflictoEditar(dto.getFechaInicio(), dto.getFechaFin(), dto.getUsuarioId(), dto.getId())) {
+            return ResponseEntity.badRequest().body("Conflicto de fecha detectado.");
         }
 
         // Actualizar los campos
-        Task Task = optTask.get();
-        Task.setNombre(dto.getNombre());
-        Task.setFechaInicio(dto.getFechaInicio());
-        Task.setFechaFin(dto.getFechaFin());
-        Task.setEstado(dto.getEstado());
-        Task.setUsuario(usuarioOpt.get());
-        Task.setSede(sedeOpt.get());
-        Task.setNegocio(negocioOpt.get());
-        Task.setDescripcion(dto.getDescripcion());
-        Task.setCreadoPor(creadorOpt.get());
+        Task task = optTask.get();
+        task.setFechaInicio(dto.getFechaInicio());
+        task.setFechaFin(dto.getFechaFin());
+        task.setEstado(task.getEstado());
+        task.setUsuario(usuarioOpt.get());
+        task.setSede(sedeOpt.get());
+        task.setDescripcion(dto.getDescripcion());
 
-        return ResponseEntity.ok(taskService.guardar(Task));
+        Task actualizado = taskService.guardar(task);
+
+        TaskDTO respuesta = new TaskDTO();
+        respuesta.setId(actualizado.getId());
+        respuesta.setFechaInicio(actualizado.getFechaInicio());
+        respuesta.setFechaFin(actualizado.getFechaFin());
+        respuesta.setEstado(actualizado.getEstado());
+        respuesta.setUsuarioId(actualizado.getUsuario().getId());
+        respuesta.setSedeId(actualizado.getSede().getId());
+        respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
+        respuesta.setDescripcion(actualizado.getDescripcion());
+        respuesta.setCreadoPorId(actualizado.getCreadoPor() != null ? actualizado.getCreadoPor().getId() : null);
+
+        return ResponseEntity.ok(respuesta);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         if (taskService.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();

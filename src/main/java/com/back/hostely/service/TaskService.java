@@ -54,12 +54,16 @@ public class TaskService {
         return taskRepository.findByCreadoPorId(usuarioId);
     }
 
-   public boolean hayConflictoHorario(LocalDateTime fechaInicio, LocalDateTime fechaFin, Integer usuarioId) {
-    return !taskRepository.verificarConflictos(fechaInicio, fechaFin, usuarioId).isEmpty();
-}
+    public boolean hayConflicto(LocalDateTime fechaInicio, LocalDateTime fechaFin, Integer usuarioId) {
+        return !taskRepository.verificarConflictos(fechaInicio, fechaFin, usuarioId).isEmpty();
+    }
 
-    public Task guardar(Task Task) {
-        return taskRepository.save(Task);
+    public boolean hayConflictoEditar(LocalDateTime fechaInicio, LocalDateTime fechaFin, Integer usuarioId, Integer taskId) {
+        return !taskRepository.verificarConflictosEdit(fechaInicio, fechaFin, usuarioId, taskId).isEmpty();
+    }
+
+    public Task guardar(Task task) {
+        return taskRepository.save(task);
     }
 
     public void eliminar(Integer id) {

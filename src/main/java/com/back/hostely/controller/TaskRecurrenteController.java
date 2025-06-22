@@ -1,6 +1,7 @@
 package com.back.hostely.controller;
 
 import com.back.hostely.dto.TaskRecurrenteDTO;
+import com.back.hostely.dto.TaskRecurrenteDTOResponse;
 import com.back.hostely.enums.TaskRecurrenteEstado;
 import com.back.hostely.model.*;
 import com.back.hostely.service.*;
@@ -37,7 +38,7 @@ public class TaskRecurrenteController {
     @GetMapping("/{id}")
     public ResponseEntity<?> obtener(@PathVariable Integer id) {
         return taskRecurrenteService.buscarPorId(id)
-                .map(ResponseEntity::ok)
+                .map(t -> ResponseEntity.ok(new TaskRecurrenteDTOResponse(t)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -71,7 +72,42 @@ public class TaskRecurrenteController {
         tarea.setNegocio(negocio.get());
         tarea.setCreadoPor(creador.get());
 
-        return ResponseEntity.ok(taskRecurrenteService.guardar(tarea));
+        TaskRecurrente tareaGuardada = taskRecurrenteService.guardar(tarea);
+
+        return ResponseEntity.ok(new TaskRecurrenteDTOResponse(tareaGuardada));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Integer id, @Valid @RequestBody TaskRecurrenteDTO dto) {
+        Optional<TaskRecurrente> opt = taskRecurrenteService.buscarPorId(id);
+
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        TaskRecurrente tarea = opt.get();
+
+        Optional<Usuario> usuario = usuarioService.buscarPorId(dto.getUsuarioId());
+        Optional<Sede> sede = sedeService.buscarPorId(dto.getSedeId());
+
+        if (usuario.isEmpty() || sede.isEmpty()) {
+            return ResponseEntity.badRequest().body("Usuario o sede no existen.");
+        }
+
+        tarea.setNombre(dto.getNombre());
+        tarea.setDescripcion(dto.getDescripcion());
+        tarea.setFechaInicio(dto.getFechaInicio());
+        tarea.setFechaFin(dto.getFechaFin());
+        tarea.setFrecuencia(dto.getFrecuencia());
+        tarea.setDiaSemana(dto.getDiaSemana());
+        tarea.setHora(dto.getHora());
+        tarea.setEstado(dto.getEstado() != null ? dto.getEstado() : tarea.getEstado());
+        tarea.setUsuario(usuario.get());
+        tarea.setSede(sede.get());
+
+        TaskRecurrente actualizada = taskRecurrenteService.guardar(tarea);
+
+        return ResponseEntity.ok(new TaskRecurrenteDTOResponse(actualizada));
     }
 
     @DeleteMapping("/{id}")

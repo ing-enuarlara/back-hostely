@@ -16,9 +16,15 @@ public class TaskDTO {
     private Integer negocioId;
     private String descripcion;
     private Integer creadoPorId;
+    private Integer tareaRecurrenteId;
+    private LocalDateTime creadoEn;
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -43,10 +49,6 @@ public class TaskDTO {
 
     public void setFechaFin(LocalDateTime fechaFin) {
         this.fechaFin = fechaFin;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public TaskEstado getEstado() {
@@ -95,5 +97,21 @@ public class TaskDTO {
 
     public void setCreadoPorId(Integer creadoPorId) {
         this.creadoPorId = creadoPorId;
+    }
+
+    public Integer getTareaRecurrenteId() {
+        return tareaRecurrenteId;
+    }
+
+    public void setTareaRecurrenteId(Integer tareaRecurrenteId) {
+        this.tareaRecurrenteId = tareaRecurrenteId;
+    }
+
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
     }
 }

@@ -35,4 +35,9 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
             "((:inicio BETWEEN t.fechaInicio AND t.fechaFin) OR (:fin BETWEEN t.fechaInicio AND t.fechaFin) OR " +
             "(t.fechaInicio BETWEEN :inicio AND :fin))")
     List<Task> verificarConflictos(@Param("inicio") LocalDateTime fechaInicio, @Param("fin") LocalDateTime fechaFin, @Param("usuarioId") Integer usuarioId);
+
+    @Query("SELECT t FROM Task t WHERE t.usuario.id = :usuarioId AND t.id <> :taskId AND " +
+            "((:inicio BETWEEN t.fechaInicio AND t.fechaFin) OR (:fin BETWEEN t.fechaInicio AND t.fechaFin) OR " +
+            "(t.fechaInicio BETWEEN :inicio AND :fin))")
+    List<Task> verificarConflictosEdit(@Param("inicio") LocalDateTime fechaInicio, @Param("fin") LocalDateTime fechaFin, @Param("usuarioId") Integer usuarioId, @Param("taskId") Integer taskId);
 }
