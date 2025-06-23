@@ -89,8 +89,10 @@ public class TaskController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public List<Task> buscarPorUsuario(@PathVariable Integer usuarioId) {
-        return taskService.buscarPorUsuario(usuarioId);
+    public List<TaskListadoDTO> buscarPorUsuario(@PathVariable Integer usuarioId) {
+        return taskService.buscarPorUsuario(usuarioId).stream()
+                .map(TaskListadoDTO::new)
+                .toList();
     }
 
     @GetMapping("/sede/{sedeId}")
@@ -193,6 +195,32 @@ public class TaskController {
         task.setUsuario(usuarioOpt.get());
         task.setSede(sedeOpt.get());
         task.setDescripcion(dto.getDescripcion());
+
+        Task actualizado = taskService.guardar(task);
+
+        TaskDTO respuesta = new TaskDTO();
+        respuesta.setId(actualizado.getId());
+        respuesta.setFechaInicio(actualizado.getFechaInicio());
+        respuesta.setFechaFin(actualizado.getFechaFin());
+        respuesta.setEstado(actualizado.getEstado());
+        respuesta.setUsuarioId(actualizado.getUsuario().getId());
+        respuesta.setSedeId(actualizado.getSede().getId());
+        respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
+        respuesta.setDescripcion(actualizado.getDescripcion());
+        respuesta.setCreadoPorId(actualizado.getCreadoPor() != null ? actualizado.getCreadoPor().getId() : null);
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<?> actualizarEstado(@PathVariable Integer id, @RequestBody TaskDTO dto) {
+        Optional<Task> optTask = taskService.buscarPorId(id);
+        if (optTask.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Task task = optTask.get();
+        task.setEstado(dto.getEstado()); // <--- aquí el fix importante
 
         Task actualizado = taskService.guardar(task);
 
