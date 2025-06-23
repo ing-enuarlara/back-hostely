@@ -11,6 +11,7 @@ public class TurnoListadoDTO {
     private Time inicio;
     private Time fin;
     private TurnoEstado estado;
+    private Integer usuarioId;
     private String usuarioNombre;
     private String usuarioFoto;
     private Integer usuarioRolId;
@@ -29,6 +30,7 @@ public class TurnoListadoDTO {
         this.localNombre = turno.getSede().getNombre();
 
         if (turno.getUsuario() != null) {
+            this.usuarioId = turno.getUsuario().getId();
             this.usuarioNombre = turno.getUsuario().getNombre();
             this.usuarioFoto = turno.getUsuario().getFotoPerfil();
             if (turno.getUsuario().getRolPrincipal() != null) {
@@ -76,6 +78,14 @@ public class TurnoListadoDTO {
 
     public void setEstado(TurnoEstado estado) {
         this.estado = estado;
+    }
+    
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public String getUsuarioNombre() {
