@@ -1,6 +1,6 @@
 package com.back.hostely.enums;
 
-public enum TaskRecurrenteEstado {
+public enum Estado {
     ACTIVO,
     INACTIVA
 }

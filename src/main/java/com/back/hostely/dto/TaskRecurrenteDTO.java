@@ -1,6 +1,6 @@
 package com.back.hostely.dto;
 
-import com.back.hostely.enums.TaskRecurrenteEstado;
+import com.back.hostely.enums.Estado;
 import com.back.hostely.enums.TaskRecurrenteFrecuencia;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class TaskRecurrenteDTO {
     private TaskRecurrenteFrecuencia frecuencia;
     private String diaSemana; // solo para semanal
     private LocalTime hora;
-    private TaskRecurrenteEstado estado;
+    private Estado estado;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -70,10 +70,10 @@ public class TaskRecurrenteDTO {
     public void setHora(LocalTime hora) {
         this.hora = hora;
     }
-    public TaskRecurrenteEstado getEstado() {
+    public Estado getEstado() {
         return estado;
     }
-    public void setEstado(TaskRecurrenteEstado estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
     public Integer getUsuarioId() {

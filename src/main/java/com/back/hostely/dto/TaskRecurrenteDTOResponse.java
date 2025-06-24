@@ -1,6 +1,6 @@
 package com.back.hostely.dto;
 
-import com.back.hostely.enums.TaskRecurrenteEstado;
+import com.back.hostely.enums.Estado;
 import com.back.hostely.enums.TaskRecurrenteFrecuencia;
 import com.back.hostely.model.TaskRecurrente; // Add this import or update the package as needed
 
@@ -16,7 +16,7 @@ public class TaskRecurrenteDTOResponse {
     private TaskRecurrenteFrecuencia frecuencia;
     private String diaSemana;
     private LocalTime hora;
-    private TaskRecurrenteEstado estado;
+    private Estado estado;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -102,11 +102,11 @@ public class TaskRecurrenteDTOResponse {
         this.hora = hora;
     }
 
-    public TaskRecurrenteEstado getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(TaskRecurrenteEstado estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

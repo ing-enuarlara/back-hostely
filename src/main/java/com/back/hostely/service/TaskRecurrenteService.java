@@ -26,7 +26,7 @@ public class TaskRecurrenteService {
     }
 
     public List<TaskRecurrente> buscarActivas() {
-        return repository.findByEstado(com.back.hostely.enums.TaskRecurrenteEstado.ACTIVO);
+        return repository.findByEstado(com.back.hostely.enums.Estado.ACTIVO);
     }
 
     public List<TaskRecurrente> buscarVigentesHoy(LocalDate hoy) {
