@@ -1,0 +1,61 @@
+package com.back.hostely.controller;
+
+import com.back.hostely.dto.TPVDTO;
+import com.back.hostely.dto.UsuarioDTO;
+import com.back.hostely.model.TPV;
+import com.back.hostely.model.UsuarioSede;
+import com.back.hostely.service.TPVService;
+import com.back.hostely.service.UsuarioService;
+import com.back.hostely.service.UsuarioSedeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/tpv")
+@CrossOrigin(origins = "*")
+public class TPVController {
+
+	@Autowired
+	private TPVService tpvService;
+
+	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private UsuarioSedeService usuarioSedeService;
+
+	@GetMapping("/{tpvId}")
+	public TPVDTO obtenerTPV(@PathVariable Long tpvId) {
+		TPV tpv = tpvService.obtenerTPVActivo(tpvId)
+				.orElseThrow(() -> new RuntimeException("TPV no encontrado o inactivo"));
+		return new TPVDTO(tpv);
+	}
+
+	@GetMapping("/acceso/{codAcceso}")
+	public TPVDTO obtenerTPVCodAcceso(@PathVariable String codAcceso) {
+		TPV tpv = tpvService.obtenerTPVCodAcceso(codAcceso)
+				.orElseThrow(() -> new RuntimeException("TPV no encontrado o inactivo"));
+		return new TPVDTO(tpv);
+	}
+
+	@GetMapping("/{tpvId}/empleados")
+	public List<UsuarioDTO> obtenerEmpleadosDeSede(@PathVariable Long tpvId) {
+		TPV tpv = tpvService.obtenerTPVActivo(tpvId)
+				.orElseThrow(() -> new RuntimeException("TPV no encontrado o inactivo"));
+
+		Integer sedeId = tpv.getSede().getId();
+
+		List<Integer> usuarioIds = usuarioSedeService.buscarPorSede(sedeId)
+				.stream()
+				.map(UsuarioSede::getUsuarioId)
+				.collect(Collectors.toList());
+
+		return usuarioService.buscarUsuariosPorIds(usuarioIds)
+				.stream()
+				.map(UsuarioDTO::new)
+				.collect(Collectors.toList());
+	}
+}

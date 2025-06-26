@@ -22,6 +22,10 @@ public class UsuarioService {
         return repository.findById(id);
     }
 
+    public List<Usuario> buscarUsuariosPorIds(List<Integer> ids) {
+        return repository.findAllById(ids);
+    }
+
     public List<Usuario> buscarPorNombre(String nombre) {
         return repository.findByNombreContainingIgnoreCase(nombre);
     }

@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .cors(cors -> {}) // habilita CORS correctamente
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/status", "/paises", "/departamentos", "/ciudades").permitAll()
+                        .requestMatchers("/auth/**", "/status", "/paises", "/departamentos", "/ciudades", "/api/tpv/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,6 +44,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
             "http://localhost:5173",
+            "http://localhost:8081",
+            "exp://192.168.0.33:8081",
             "https://front-hostely-web.vercel.app",
             "https://api.hostely.es"
         ));
