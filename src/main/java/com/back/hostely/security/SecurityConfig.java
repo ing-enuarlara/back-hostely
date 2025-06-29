@@ -46,6 +46,7 @@ public class SecurityConfig {
             "http://localhost:5173",
             "http://localhost:8081",
             "exp://192.168.0.33:8081",
+            "exp://192.168.1.141:8081",
             "https://front-hostely-web.vercel.app",
             "https://api.hostely.es"
         ));
