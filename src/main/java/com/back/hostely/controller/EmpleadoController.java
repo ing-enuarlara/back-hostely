@@ -3,15 +3,20 @@ package com.back.hostely.controller;
 import com.back.hostely.model.UsuarioEmpleado;
 import com.back.hostely.model.Usuario;
 import com.back.hostely.model.UsuarioRol;
+import com.back.hostely.model.UsuarioSede;
 import com.back.hostely.repository.RolRepository;
+import com.back.hostely.repository.SedeRepository;
 import com.back.hostely.repository.UsuarioEmpleadoRepository;
 import com.back.hostely.repository.UsuarioRepository;
 import com.back.hostely.repository.UsuarioRolRepository;
+import com.back.hostely.repository.UsuarioSedeRepository;
 import com.back.hostely.dto.EmpleadoDTO;
 import com.back.hostely.dto.EmpleadoListDTO;
 import com.back.hostely.dto.EmpleadoUpdateDTO;
 import com.back.hostely.service.S3Service;
+import com.back.hostely.service.UsuarioSedeService;
 import com.back.hostely.dto.RolDTO;
+import com.back.hostely.dto.SedeDTO;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +46,12 @@ public class EmpleadoController {
     private UsuarioRolRepository usuarioRolRepository;
 
     @Autowired
+    private UsuarioSedeRepository usuarioSedeRepository;
+
+    @Autowired
+    private UsuarioSedeService usuarioSedeService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,6 +59,9 @@ public class EmpleadoController {
 
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private SedeRepository sedeRepository;
 
     @GetMapping("/listar/{negocioId}")
     public List<EmpleadoListDTO> listarPorNegocio(@PathVariable Integer negocioId) {
@@ -94,6 +108,15 @@ public class EmpleadoController {
                     });
                 }
                 dto.setRoles(rolesDTO);
+
+                List<UsuarioSede> sedesDelUsuario = usuarioSedeRepository.findByUsuarioId(u.getId());
+                List<SedeDTO> sedesDTO = new ArrayList<>();
+                for (UsuarioSede s : sedesDelUsuario) {
+                    sedeRepository.findById(s.getSedeId()).ifPresent(sede -> {
+                        sedesDTO.add(new SedeDTO(sede.getId(), sede.getNombre(), sede.getDireccion()));
+                    });
+                }
+                dto.setSedes(sedesDTO);
 
                 empleados.add(dto);
             }
@@ -196,6 +219,16 @@ public class EmpleadoController {
         usuarioRol.setPrincipal("SI");
         usuarioRolRepository.save(usuarioRol);
 
+        // Guardar relaciones con sedes
+        if (dto.getSedes() != null && !dto.getSedes().isEmpty()) {
+            for (Integer sedeId : dto.getSedes()) {
+                UsuarioSede us = new UsuarioSede();
+                us.setUsuarioId(usuarioGuardado.getId());
+                us.setSedeId(sedeId);
+                usuarioSedeService.crear(us);
+            }
+        }
+
         return ResponseEntity.ok("Empleado registrado con éxito");
     }
 
@@ -245,6 +278,23 @@ public class EmpleadoController {
             if (dto.getTransportePropio() != null)
                 empleado.setTransportePropio(dto.getTransportePropio());
             usuarioEmpleadoRepository.save(empleado);
+        }
+
+        // Reemplazar relaciones con sedes
+        if (dto.getSedes() != null) {
+            // Eliminar relaciones anteriores
+            List<UsuarioSede> actuales = usuarioSedeService.buscarPorUsuario(id);
+            for (UsuarioSede rel : actuales) {
+                usuarioSedeService.eliminar(rel.getId());
+            }
+
+            // Crear nuevas relaciones
+            for (Integer sedeId : dto.getSedes()) {
+                UsuarioSede us = new UsuarioSede();
+                us.setUsuarioId(id);
+                us.setSedeId(sedeId);
+                usuarioSedeService.crear(us);
+            }
         }
 
         return ResponseEntity.ok("Empleado actualizado con éxito");

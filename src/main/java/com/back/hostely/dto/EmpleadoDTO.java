@@ -1,5 +1,8 @@
 package com.back.hostely.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmpleadoDTO {
     // Campos de Usuario
     private String nombre;
@@ -14,6 +17,7 @@ public class EmpleadoDTO {
     private String verificado;
 
     // Campos de UsuarioEmpleado
+    private List<Integer> sedes;
     private String disponibilidad;
     private String estado;
     private String transportePropio;
@@ -57,4 +61,7 @@ public class EmpleadoDTO {
 
     public String getVerificado() { return verificado; }
     public void setVerificado(String verificado) { this.verificado = verificado; }
+
+    public List<Integer> getSedes() { return sedes; }
+    public void setSedes(List<Integer> sedes) { this.sedes = (sedes == null) ? new ArrayList<>() : sedes; }
 }

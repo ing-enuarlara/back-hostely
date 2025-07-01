@@ -32,6 +32,7 @@ public class EmpleadoListDTO {
     private Integer diasLibres;
 
     private List<RolDTO> roles;
+    private List<SedeDTO> sedes;
 
     // Getters y Setters
     public Integer getId() { return id; }
@@ -105,4 +106,7 @@ public class EmpleadoListDTO {
 
     public List<RolDTO> getRoles() { return roles; }
     public void setRoles(List<RolDTO> roles) { this.roles = roles; }
+
+    public List<SedeDTO> getSedes() { return sedes; }
+    public void setSedes(List<SedeDTO> sedes) { this.sedes = sedes; }
 }

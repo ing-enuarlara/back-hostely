@@ -1,5 +1,8 @@
 package com.back.hostely.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmpleadoUpdateDTO {
     // Usuario
     private String nombre;
@@ -13,6 +16,7 @@ public class EmpleadoUpdateDTO {
     private Integer negocioId;
 
     // UsuarioEmpleado
+    private List<Integer> sedes;
     private String disponibilidad;
     private String estado;
     private String transportePropio;
@@ -53,4 +57,7 @@ public class EmpleadoUpdateDTO {
 
     public String getTransportePropio() { return transportePropio; }
     public void setTransportePropio(String transportePropio) { this.transportePropio = transportePropio; }
+
+    public List<Integer> getSedes() { return sedes; }
+    public void setSedes(List<Integer> sedes) { this.sedes = (sedes == null) ? new ArrayList<>() : sedes; }
 }
