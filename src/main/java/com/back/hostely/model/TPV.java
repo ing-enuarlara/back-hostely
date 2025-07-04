@@ -24,7 +24,7 @@ public class TPV implements Serializable {
     @JoinColumn(name = "tpv_sede")
     private Sede sede;
 
-    @Column(name = "tpv_clave_acceso")
+    @Column(name = "tpv_clave_acceso", unique = true)
     private String claveAcceso;
 
     @Enumerated(EnumType.STRING)
