@@ -1,5 +1,8 @@
 package com.back.hostely.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +22,10 @@ public class Rol {
 
     @Column(name = "rol_created_at", insertable = false, updatable = false)
     private String creadoEn;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rol_permisos", joinColumns = @JoinColumn(name = "rope_rol"), inverseJoinColumns = @JoinColumn(name = "rope_permiso"))
+    private Set<Permiso> permisos = new HashSet<>();
 
     // Getters y Setters
 
@@ -52,5 +59,13 @@ public class Rol {
 
     public void setCreadoEn(String creadoEn) {
         this.creadoEn = creadoEn;
+    }
+
+    public Set<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(Set<Permiso> permisos) {
+        this.permisos = permisos;
     }
 }

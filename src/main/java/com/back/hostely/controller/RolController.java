@@ -1,5 +1,6 @@
 package com.back.hostely.controller;
 
+import com.back.hostely.dto.RolDTO;
 import com.back.hostely.model.Rol;
 import com.back.hostely.service.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class RolController {
     }
 
     @PostMapping
-    public Rol crear(@RequestBody Rol rol) {
-        return service.crear(rol);
+    public Rol crear(@RequestBody RolDTO dto) {
+        return service.crearConPermisos(dto);
     }
 
     @PutMapping("/{id}")
@@ -49,5 +50,10 @@ public class RolController {
     @GetMapping("/negocioConGlobales/{negocioId}")
     public List<Rol> buscarConGlobales(@PathVariable Integer negocioId) {
         return service.buscarConGlobales(negocioId);
+    }
+
+    @PostMapping("/{id}/permisos")
+    public void asignarPermisos(@PathVariable Integer id, @RequestBody List<Integer> permisoIds) {
+        service.asignarPermisos(id, permisoIds);
     }
 }
