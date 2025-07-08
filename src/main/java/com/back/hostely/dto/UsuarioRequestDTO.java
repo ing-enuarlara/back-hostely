@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.back.hostely.model.Usuario;
 
-public class UsuarioDTO {
+public class UsuarioRequestDTO {
     private Integer id;
     private String nombre;
     private String foto;
@@ -19,12 +19,12 @@ public class UsuarioDTO {
     private Integer negocioId;
     private String verificado;
 
-    private List<RolDTO> roles;
-    private List<SedeDTO> sedes;
+    private List<Integer> roles;
+    private List<Integer> sedes;
 
-    public UsuarioDTO() {}
+    public UsuarioRequestDTO() {}
 
-    public UsuarioDTO(Usuario u) {
+    public UsuarioRequestDTO(Usuario u) {
         this.id = u.getId();
         this.nombre = u.getNombre();
         this.foto = u.getFotoPerfil();
@@ -37,13 +37,12 @@ public class UsuarioDTO {
         this.negocioId = u.getNegocioId();
         this.verificado = u.getVerificado();
 
-        // Mapear objetos completos
         this.roles = u.getRoles() != null
-            ? u.getRoles().stream().map(RolDTO::new).collect(Collectors.toList())
+            ? u.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList())
             : List.of();
 
         this.sedes = u.getSedes() != null
-            ? u.getSedes().stream().map(SedeDTO::new).collect(Collectors.toList())
+            ? u.getSedes().stream().map(s -> s.getId()).collect(Collectors.toList())
             : List.of();
     }
 
@@ -143,19 +142,19 @@ public class UsuarioDTO {
         this.verificado = verificado;
     }
 
-    public List<RolDTO> getRoles() {
+    public List<Integer> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RolDTO> roles) {
+    public void setRoles(List<Integer> roles) {
         this.roles = roles;
     }
 
-    public List<SedeDTO> getSedes() {
+    public List<Integer> getSedes() {
         return sedes;
     }
 
-    public void setSedes(List<SedeDTO> sedes) {
+    public void setSedes(List<Integer> sedes) {
         this.sedes = sedes;
     }
 }

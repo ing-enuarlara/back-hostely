@@ -58,14 +58,6 @@ public class PermisoService {
         return dto;
     }
 
-    private Permiso toEntity(PermisoDTO dto) {
-        Permiso permiso = new Permiso();
-        permiso.setId(dto.getId());
-        permiso.setNombre(dto.getNombre());
-        permiso.setDescripcion(dto.getDescripcion());
-        return permiso;
-    }
-
     public Set<Permiso> expandirConDependencias(List<Integer> idsIniciales) {
         Set<Permiso> resultado = new HashSet<>(permisoRepository.findAllById(idsIniciales));
 

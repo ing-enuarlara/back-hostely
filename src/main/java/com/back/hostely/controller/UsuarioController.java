@@ -1,5 +1,7 @@
 package com.back.hostely.controller;
 
+import com.back.hostely.dto.UsuarioDTO;
+import com.back.hostely.dto.UsuarioRequestDTO;
 import com.back.hostely.model.Usuario;
 import com.back.hostely.service.UsuarioService;
 import com.back.hostely.service.S3Service;
@@ -44,12 +46,15 @@ public class UsuarioController {
     }
 
     @GetMapping("/negocio/{negocioId}")
-    public List<Usuario> porNegocio(@PathVariable Integer negocioId) {
-        return service.buscarPorNegocio(negocioId);
+    public List<UsuarioDTO> porNegocio(@PathVariable Integer negocioId) {
+        return service.buscarPorNegocio(negocioId)
+                .stream()
+                .map(UsuarioDTO::new)
+                .toList();
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Usuario crear(@RequestPart("usuario") Usuario u,
+    public Usuario crear(@RequestPart("usuario") UsuarioRequestDTO u,
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) throws IOException {
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
@@ -66,7 +71,7 @@ public class UsuarioController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Usuario actualizar(@PathVariable Integer id,
-            @RequestPart("usuario") Usuario datos,
+            @RequestPart("usuario") UsuarioRequestDTO datos,
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) throws IOException {
 
         if (fotoPerfil != null && !fotoPerfil.isEmpty()) {

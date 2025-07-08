@@ -5,6 +5,8 @@ import com.back.hostely.repository.SedeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,10 @@ public class SedeService {
 
     public List<Sede> listarTodos() {
         return repository.findAll();
+    }
+
+    public Set<Sede> buscarPorIds(List<Integer> ids) {
+        return new HashSet<>(repository.findAllById(ids));
     }
 
     public Optional<Sede> buscarPorId(Integer id) {

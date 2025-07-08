@@ -1,5 +1,7 @@
 package com.back.hostely.dto;
 
+import com.back.hostely.model.Sede;
+
 public class SedeDTO {
     private Integer id;
     private String nombre;
@@ -11,6 +13,12 @@ public class SedeDTO {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
+    }
+
+    public SedeDTO(Sede s) {
+        this.id = s.getId();
+        this.nombre = s.getNombre();
+        this.direccion = s.getDireccion();
     }
 
     public Integer getId() { return id; }

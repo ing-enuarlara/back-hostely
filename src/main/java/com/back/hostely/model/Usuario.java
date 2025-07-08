@@ -1,7 +1,10 @@
 package com.back.hostely.model;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -48,13 +51,21 @@ public class Usuario {
     @Column(name = "uss_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "usuario_sedes", joinColumns = @JoinColumn(name = "usse_uss"), inverseJoinColumns = @JoinColumn(name = "usse_sede"))
+    private Set<Sede> sedes = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usrl_uss"), inverseJoinColumns = @JoinColumn(name = "usrl_rol"))
+    private Set<Rol> roles = new HashSet<>();
+
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private List<UsuarioRol> roles;
+    private List<UsuarioRol> rol;
 
     public Rol getRolPrincipal() {
-        if (roles == null)
+        if (rol == null)
             return null;
-        return roles.stream()
+        return rol.stream()
                 .filter(ur -> ur.isPrincipalActivo())
                 .map(UsuarioRol::getRol)
                 .findFirst()
@@ -164,5 +175,21 @@ public class Usuario {
 
     public void setCreadoEn(String creadoEn) {
         this.creadoEn = creadoEn;
+    }
+
+    public Set<Sede> getSedes() {
+        return sedes;
+    }
+
+    public void setSedes(Set<Sede> sedes) {
+        this.sedes = sedes;
+    }
+
+    public Set<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
     }
 }

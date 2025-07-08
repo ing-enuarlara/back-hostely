@@ -1,5 +1,7 @@
 package com.back.hostely.dto;
 
+import com.back.hostely.model.Rol;
+
 import java.util.List;
 
 public class RolDTO {
@@ -13,6 +15,11 @@ public class RolDTO {
     public RolDTO(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
+    }
+
+    public RolDTO(Rol r) {
+        this.id = r.getId();
+        this.nombre = r.getNombre();
     }
 
     public Integer getId() { return id; }
