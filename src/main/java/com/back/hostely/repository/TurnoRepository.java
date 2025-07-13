@@ -14,33 +14,36 @@ import java.util.List;
 @Repository
 public interface TurnoRepository extends JpaRepository<Turno, Integer> {
 
-    List<Turno> findByFecha(Date fecha);
+	List<Turno> findByFecha(Date fecha);
 
-    List<Turno> findByInicio(Time inicio);
+	List<Turno> findByInicio(Time inicio);
 
-    List<Turno> findByFin(Time fin);
+	List<Turno> findByFin(Time fin);
 
-    List<Turno> findByEstado(TurnoEstado estado);
+	List<Turno> findByEstado(TurnoEstado estado);
 
-    @Query("SELECT t FROM Turno t WHERE t.usuario.id = :usuarioId")
-    List<Turno> findByUsuarioId(@Param("usuarioId") Integer usuarioId);
+	@Query("SELECT t FROM Turno t WHERE t.usuario.id = :usuarioId")
+	List<Turno> findByUsuarioId(@Param("usuarioId") Integer usuarioId);
 
-    @Query("SELECT t FROM Turno t WHERE t.sede.id = :sedeId")
-    List<Turno> findBySedeId(@Param("sedeId") Integer sedeId);
+	@Query("SELECT t FROM Turno t WHERE t.sede.id = :sedeId")
+	List<Turno> findBySedeId(@Param("sedeId") Integer sedeId);
 
-    @Query("SELECT t FROM Turno t WHERE t.negocio.id = :negocioId")
-    List<Turno> findByNegocioId(@Param("negocioId") Integer negocioId);
+	@Query("SELECT t FROM Turno t WHERE t.negocio.id = :negocioId")
+	List<Turno> findByNegocioId(@Param("negocioId") Integer negocioId);
 
-    @Query("SELECT t FROM Turno t WHERE t.creadoPor.id = :creadorId")
-    List<Turno> findByCreadoPorId(@Param("creadorId") Integer creadorId);
+	@Query("SELECT t FROM Turno t WHERE t.creadoPor.id = :creadorId")
+	List<Turno> findByCreadoPorId(@Param("creadorId") Integer creadorId);
 
-    @Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND " +
-            "((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
-            "(t.inicio BETWEEN :inicio AND :fin))")
-    List<Turno> verificarConflictos(Date fecha, Time inicio, Time fin, Integer usuarioId);
+	@Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND " +
+		"((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
+		"(t.inicio BETWEEN :inicio AND :fin))")
+	List<Turno> verificarConflictos(Date fecha, Time inicio, Time fin, Integer usuarioId);
 
-    @Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND t.id <> :turnoId AND " +
-            "((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
-            "(t.inicio BETWEEN :inicio AND :fin))")
-    List<Turno> verificarConflictosEdit(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId);
+	@Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND t.id <> :turnoId AND " +
+		"((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
+		"(t.inicio BETWEEN :inicio AND :fin))")
+	List<Turno> verificarConflictosEdit(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId);
+
+	@Query("SELECT t FROM Turno t WHERE t.usuario.id = :usuarioId AND t.fecha = :fecha")
+	List<Turno> findByUsuarioIdAndFecha(@Param("usuarioId") Integer usuarioId, @Param("fecha") Date fecha);
 }

@@ -2,12 +2,16 @@ package com.back.hostely.controller;
 
 import com.back.hostely.model.Fichaje;
 import com.back.hostely.service.FichajeService;
+import com.back.hostely.service.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/api/fichaje")
@@ -16,6 +20,9 @@ public class FichajeController {
 
     @Autowired
     private FichajeService service;
+
+    @Autowired
+    private TurnoService turnoService;
 
     @GetMapping
     public List<Fichaje> listar() {
@@ -54,6 +61,15 @@ public class FichajeController {
         }
 
         Fichaje registrado = service.registrar(fichaje);
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime fechaParsed = LocalDateTime.parse(fichaje.getFecha(), formatter);
+            Timestamp timestamp = Timestamp.valueOf(fechaParsed);
+
+            turnoService.actualizarEstadoSiCoincideConFichaje( fichaje.getUsuarioId(), timestamp, fichaje.getTipo() );
+        } catch (Exception e) {
+            System.err.println("Error al parsear fecha de fichaje: " + e.getMessage());
+        }
         return ResponseEntity.ok(registrado);
     }
 
