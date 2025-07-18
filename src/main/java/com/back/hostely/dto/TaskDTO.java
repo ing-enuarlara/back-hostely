@@ -1,6 +1,7 @@
 package com.back.hostely.dto;
 
 import com.back.hostely.enums.TaskEstado;
+import com.back.hostely.enums.Prioridad;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ public class TaskDTO {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private TaskEstado estado;
+    private Prioridad prioridad;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -57,6 +59,14 @@ public class TaskDTO {
 
     public void setEstado(TaskEstado estado) {
         this.estado = estado;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Integer getUsuarioId() {

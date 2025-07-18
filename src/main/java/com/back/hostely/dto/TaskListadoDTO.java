@@ -1,6 +1,7 @@
 package com.back.hostely.dto;
 
 import com.back.hostely.enums.TaskEstado;
+import com.back.hostely.enums.Prioridad;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ public class TaskListadoDTO {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private TaskEstado estado;
+    private Prioridad prioridad;
     private String usuarioNombre;
     private String usuarioFoto;
     private Integer usuarioRolId;
@@ -32,6 +34,7 @@ public class TaskListadoDTO {
         this.fechaInicio = task.getFechaInicio();
         this.fechaFin = task.getFechaFin();
         this.estado = task.getEstado();
+        this.prioridad = task.getPrioridad();
         this.tareaRecurrenteId = task.getTareaRecurrente() != null ? task.getTareaRecurrente().getId() : null;
         this.creadoEn = task.getCreadoEn();
 
@@ -100,6 +103,14 @@ public class TaskListadoDTO {
 
     public void setEstado(TaskEstado estado) {
         this.estado = estado;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 
     public String getUsuarioNombre() {

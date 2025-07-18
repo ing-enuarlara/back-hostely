@@ -3,6 +3,7 @@ package com.back.hostely.dto;
 import com.back.hostely.enums.Estado;
 import com.back.hostely.enums.TaskRecurrenteFrecuencia;
 import com.back.hostely.model.TaskRecurrente; // Add this import or update the package as needed
+import com.back.hostely.enums.Prioridad;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ public class TaskRecurrenteDTOResponse {
     private String diaSemana;
     private LocalTime hora;
     private Estado estado;
+    private Prioridad prioridad;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -32,6 +34,7 @@ public class TaskRecurrenteDTOResponse {
         this.diaSemana = tarea.getDiaSemana();
         this.hora = tarea.getHora();
         this.estado = tarea.getEstado();
+        this.prioridad = tarea.getPrioridad();
         this.usuarioId = tarea.getUsuario().getId();
         this.sedeId = tarea.getSede().getId();
         this.negocioId = tarea.getNegocio().getId();
@@ -108,6 +111,14 @@ public class TaskRecurrenteDTOResponse {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Integer getUsuarioId() {

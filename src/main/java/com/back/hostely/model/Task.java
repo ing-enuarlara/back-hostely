@@ -1,6 +1,7 @@
 package com.back.hostely.model;
 
 import com.back.hostely.enums.TaskEstado;
+import com.back.hostely.enums.Prioridad;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,6 +32,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Column(name = "tasks_estado", nullable = false)
     private TaskEstado estado = TaskEstado.PENDIENTE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tasks_prioridad", nullable = false)
+    private Prioridad prioridad = Prioridad.NONE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tasks_usuario", nullable = false)
@@ -106,6 +111,14 @@ public class Task {
 
     public void setEstado(TaskEstado estado) {
         this.estado = estado;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Usuario getUsuario() {

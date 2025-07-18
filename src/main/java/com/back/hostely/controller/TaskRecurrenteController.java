@@ -3,6 +3,7 @@ package com.back.hostely.controller;
 import com.back.hostely.dto.TaskRecurrenteDTO;
 import com.back.hostely.dto.TaskRecurrenteDTOResponse;
 import com.back.hostely.enums.Estado;
+import com.back.hostely.enums.Prioridad;
 import com.back.hostely.model.*;
 import com.back.hostely.service.*;
 
@@ -67,6 +68,7 @@ public class TaskRecurrenteController {
         tarea.setDiaSemana(dto.getDiaSemana());
         tarea.setHora(dto.getHora());
         tarea.setEstado(dto.getEstado() != null ? dto.getEstado() : Estado.ACTIVO);
+        tarea.setPrioridad(dto.getPrioridad() != null ? dto.getPrioridad() : Prioridad.NONE);
         tarea.setUsuario(usuario.get());
         tarea.setSede(sede.get());
         tarea.setNegocio(negocio.get());
@@ -102,6 +104,7 @@ public class TaskRecurrenteController {
         tarea.setDiaSemana(dto.getDiaSemana());
         tarea.setHora(dto.getHora());
         tarea.setEstado(dto.getEstado() != null ? dto.getEstado() : tarea.getEstado());
+        tarea.setPrioridad(dto.getPrioridad() != null ? dto.getPrioridad() : tarea.getPrioridad());
         tarea.setUsuario(usuario.get());
         tarea.setSede(sede.get());
 

@@ -2,6 +2,7 @@ package com.back.hostely.dto;
 
 import com.back.hostely.enums.Estado;
 import com.back.hostely.enums.TaskRecurrenteFrecuencia;
+import com.back.hostely.enums.Prioridad;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ public class TaskRecurrenteDTO {
     private String diaSemana; // solo para semanal
     private LocalTime hora;
     private Estado estado;
+    private Prioridad prioridad;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -76,6 +78,12 @@ public class TaskRecurrenteDTO {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
+    }
     public Integer getUsuarioId() {
         return usuarioId;
     }
@@ -100,6 +108,4 @@ public class TaskRecurrenteDTO {
     public void setCreadoPorId(Integer creadoPorId) {
         this.creadoPorId = creadoPorId;
     }
-
-    // Getters y setters completos (puedo generarlos si lo pides)
 }

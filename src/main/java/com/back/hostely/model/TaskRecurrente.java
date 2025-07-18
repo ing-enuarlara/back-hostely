@@ -2,6 +2,7 @@ package com.back.hostely.model;
 
 import com.back.hostely.enums.TaskRecurrenteFrecuencia;
 import com.back.hostely.enums.Estado;
+import com.back.hostely.enums.Prioridad;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -44,6 +45,10 @@ public class TaskRecurrente {
     @Enumerated(EnumType.STRING)
     @Column(name = "tare_estado", nullable = false)
     private Estado estado;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tare_prioridad", nullable = false)
+    private Prioridad prioridad;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tare_usuario", nullable = false)
@@ -139,6 +144,14 @@ public class TaskRecurrente {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Usuario getUsuario() {

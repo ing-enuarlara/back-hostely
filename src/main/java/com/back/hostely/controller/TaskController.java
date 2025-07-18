@@ -3,6 +3,7 @@ package com.back.hostely.controller;
 import com.back.hostely.dto.TaskDTO;
 import com.back.hostely.dto.TaskListadoDTO;
 import com.back.hostely.enums.TaskEstado;
+import com.back.hostely.enums.Prioridad;
 import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Sede;
 import com.back.hostely.model.Task;
@@ -66,6 +67,7 @@ public class TaskController {
         dto.setFechaInicio(task.getFechaInicio());
         dto.setFechaFin(task.getFechaFin());
         dto.setEstado(task.getEstado());
+        dto.setPrioridad(task.getPrioridad());
         dto.setDescripcion(task.getDescripcion());
         dto.setCreadoPorId(task.getCreadoPor().getId());
         dto.setTareaRecurrenteId(task.getTareaRecurrente() != null ? task.getTareaRecurrente().getId() : null);
@@ -124,6 +126,7 @@ public class TaskController {
         task.setFechaInicio(dto.getFechaInicio());
         task.setFechaFin(dto.getFechaFin());
         task.setEstado(dto.getEstado() != null ? dto.getEstado() : TaskEstado.PENDIENTE);
+        task.setPrioridad(dto.getPrioridad() != null ? dto.getPrioridad() : Prioridad.NONE);
         task.setDescripcion(dto.getDescripcion());
         task.setNombre(dto.getNombre());
 
@@ -153,6 +156,7 @@ public class TaskController {
         respuesta.setFechaInicio(guardado.getFechaInicio());
         respuesta.setFechaFin(guardado.getFechaFin());
         respuesta.setEstado(guardado.getEstado());
+        respuesta.setPrioridad(guardado.getPrioridad());
         respuesta.setUsuarioId(dto.getUsuarioId());
         respuesta.setSedeId(dto.getSedeId());
         respuesta.setNegocioId(dto.getNegocioId());
@@ -192,6 +196,7 @@ public class TaskController {
         task.setFechaInicio(dto.getFechaInicio());
         task.setFechaFin(dto.getFechaFin());
         task.setEstado(task.getEstado());
+        task.setPrioridad(task.getPrioridad());
         task.setUsuario(usuarioOpt.get());
         task.setSede(sedeOpt.get());
         task.setDescripcion(dto.getDescripcion());
@@ -203,6 +208,7 @@ public class TaskController {
         respuesta.setFechaInicio(actualizado.getFechaInicio());
         respuesta.setFechaFin(actualizado.getFechaFin());
         respuesta.setEstado(actualizado.getEstado());
+        respuesta.setPrioridad(actualizado.getPrioridad());
         respuesta.setUsuarioId(actualizado.getUsuario().getId());
         respuesta.setSedeId(actualizado.getSede().getId());
         respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
@@ -221,6 +227,7 @@ public class TaskController {
 
         Task task = optTask.get();
         task.setEstado(dto.getEstado()); // <--- aquí el fix importante
+        task.setPrioridad(dto.getPrioridad());
 
         Task actualizado = taskService.guardar(task);
 
@@ -229,6 +236,7 @@ public class TaskController {
         respuesta.setFechaInicio(actualizado.getFechaInicio());
         respuesta.setFechaFin(actualizado.getFechaFin());
         respuesta.setEstado(actualizado.getEstado());
+        respuesta.setPrioridad(actualizado.getPrioridad());
         respuesta.setUsuarioId(actualizado.getUsuario().getId());
         respuesta.setSedeId(actualizado.getSede().getId());
         respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
