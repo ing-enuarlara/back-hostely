@@ -30,12 +30,16 @@ public class TaskRecurrenteGenerator {
         List<TaskRecurrente> recurrentes = recurrenteService.buscarVigentesHoy(hoy);
 
         for (TaskRecurrente tarea : recurrentes) {
+            LocalDate fInicio = tarea.getFechaInicio();
             boolean esHoy = switch (tarea.getFrecuencia()) {
                 case DIARIA -> true;
                 case SEMANAL -> tarea.getDiaSemana() != null &&
                         tarea.getDiaSemana().equalsIgnoreCase(diaSemana.name());
-                case MENSUAL -> hoy.getDayOfMonth() == tarea.getFechaInicio().getDayOfMonth();
-                case ANUAL -> hoy.getDayOfYear() == tarea.getFechaInicio().getDayOfYear();
+                case MENSUAL -> hoy.getDayOfMonth() == fInicio.getDayOfMonth();
+                case ANUAL -> {
+                    yield hoy.getDayOfMonth() == fInicio.getDayOfMonth() &&
+                        hoy.getMonth() == fInicio.getMonth();
+                }
             };
 
             if (!esHoy)
@@ -53,6 +57,7 @@ public class TaskRecurrenteGenerator {
             nueva.setFechaInicio(inicio);
             nueva.setFechaFin(fin);
             nueva.setEstado(TaskEstado.PENDIENTE);
+            nueva.setPrioridad(tarea.getPrioridad());
             nueva.setUsuario(tarea.getUsuario());
             nueva.setSede(tarea.getSede());
             nueva.setNegocio(tarea.getNegocio());
