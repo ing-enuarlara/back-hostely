@@ -75,6 +75,18 @@ public class TaskController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<TaskListadoDTO> obtenerInfoTask(@PathVariable Integer id) {
+        Optional<Task> optTask = taskService.buscarPorId(id);
+
+        if (optTask.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        TaskListadoDTO dto = new TaskListadoDTO(optTask.get());
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping("/fechaInicio/{fecha}")
     public List<Task> buscarPorFechaInicio(@PathVariable LocalDateTime fechaInicio) {
         return taskService.buscarPorFechaInicio(fechaInicio);
