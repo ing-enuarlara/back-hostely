@@ -238,8 +238,7 @@ public class TaskController {
         }
 
         Task task = optTask.get();
-        task.setEstado(dto.getEstado()); // <--- aquí el fix importante
-        task.setPrioridad(dto.getPrioridad());
+        task.setEstado(dto.getEstado());
 
         Task actualizado = taskService.guardar(task);
 
