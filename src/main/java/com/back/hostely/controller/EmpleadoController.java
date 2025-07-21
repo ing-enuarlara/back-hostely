@@ -104,7 +104,7 @@ public class EmpleadoController {
                 List<RolDTO> rolesDTO = new ArrayList<>();
                 for (UsuarioRol r : rolesDelUsuario) {
                     rolRepository.findById(r.getRolId()).ifPresent(rol -> {
-                        rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre()));
+                        rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.getDescripcion()));
                     });
                 }
                 dto.setRoles(rolesDTO);
@@ -168,7 +168,7 @@ public class EmpleadoController {
         List<RolDTO> rolesDTO = new ArrayList<>();
         for (UsuarioRol r : rolesDelUsuario) {
             rolRepository.findById(r.getRolId()).ifPresent(rol -> {
-                rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre()));
+                rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.getDescripcion()));
             });
         }
         dto.setRoles(rolesDTO);

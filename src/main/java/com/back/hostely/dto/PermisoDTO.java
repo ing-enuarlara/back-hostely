@@ -5,6 +5,7 @@ public class PermisoDTO {
     private Integer id;
     private String nombre;
     private String descripcion;
+    private Integer padre;
 
     public Integer getId() {
         return id;
@@ -23,5 +24,11 @@ public class PermisoDTO {
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    public Integer getPadre() {
+        return padre;
+    }
+    public void setPadre(Integer padre) {
+        this.padre = padre;
     }
 }

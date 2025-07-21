@@ -34,6 +34,7 @@ public class PermisoService {
         Permiso permiso = new Permiso();
         permiso.setNombre(dto.getNombre());
         permiso.setDescripcion(dto.getDescripcion());
+        permiso.setPadre(dto.getPadre());
         permiso = permisoRepository.save(permiso);
         return toDTO(permiso);
     }
@@ -43,6 +44,7 @@ public class PermisoService {
                 .orElseThrow(() -> new RuntimeException("Permiso no encontrado"));
         permiso.setNombre(dto.getNombre());
         permiso.setDescripcion(dto.getDescripcion());
+        permiso.setPadre(dto.getPadre());
         return toDTO(permisoRepository.save(permiso));
     }
 
@@ -55,6 +57,7 @@ public class PermisoService {
         dto.setId(permiso.getId());
         dto.setNombre(permiso.getNombre());
         dto.setDescripcion(permiso.getDescripcion());
+        dto.setPadre(permiso.getPadre());
         return dto;
     }
 

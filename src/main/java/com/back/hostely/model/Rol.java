@@ -17,6 +17,9 @@ public class Rol {
     @Column(name = "rol_nombre", nullable = false, unique = true)
     private String nombre;
 
+    @Column(name = "rol_descripcion", nullable = false)
+    private String descripcion;
+
     @Column(name = "rol_negocio", nullable = false)
     private Integer negocioId;
 
@@ -43,6 +46,14 @@ public class Rol {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Integer getNegocioId() {

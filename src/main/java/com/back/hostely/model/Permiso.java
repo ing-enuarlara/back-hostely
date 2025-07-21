@@ -17,6 +17,9 @@ public class Permiso {
     @Column(name = "per_descripcion", insertable = false)
     private String descripcion;
 
+    @Column(name = "per_padre", insertable = false)
+    private Integer padre;
+
     @Column(name = "per_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
@@ -42,6 +45,14 @@ public class Permiso {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Integer getPadre() {
+        return padre;
+    }
+
+    public void setPadre(Integer padre) {
+        this.padre = padre;
     }
 
     public String getCreadoEn() {

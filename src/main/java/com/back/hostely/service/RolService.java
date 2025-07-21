@@ -40,6 +40,7 @@ public class RolService {
     public Rol crearConPermisos(RolDTO dto) {
         Rol rol = new Rol();
         rol.setNombre(dto.getNombre());
+        rol.setDescripcion(dto.getDescripcion());
         rol.setNegocioId(dto.getNegocioId());
 
         // Guardar primero para generar ID
@@ -58,6 +59,7 @@ public class RolService {
     public Rol actualizar(Integer id, Rol datos) {
         return repository.findById(id).map(r -> {
             r.setNombre(datos.getNombre());
+            r.setDescripcion(datos.getDescripcion());
             if (r.getNegocioId() == null && datos.getNegocioId() != null) {
                 r.setNegocioId(datos.getNegocioId());
             }
