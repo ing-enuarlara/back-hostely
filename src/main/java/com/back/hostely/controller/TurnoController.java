@@ -12,15 +12,19 @@ import com.back.hostely.service.NegocioService;
 import com.back.hostely.service.SedeService;
 import com.back.hostely.service.TurnoService;
 import com.back.hostely.service.UsuarioService;
+import com.back.hostely.repository.TurnoRepository;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +33,9 @@ public class TurnoController {
 
     @Autowired
     private TurnoService turnoService;
+
+    @Autowired
+    private TurnoRepository turnoRepository;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -204,6 +211,19 @@ public class TurnoController {
         respuesta.setCreadoPorId(actualizado.getCreadoPor() != null ? actualizado.getCreadoPor().getId() : null);
 
         return ResponseEntity.ok(respuesta);
+    }
+
+    @PatchMapping("/estado/{id}")
+    public ResponseEntity<?> actualizarEstado(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+        String nuevoEstado = body.get("estado");
+
+        Turno funcion = turnoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Función no encontrada"));
+
+        funcion.setEstado(TurnoEstado.valueOf(nuevoEstado));
+        turnoRepository.save(funcion);
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/eliminar/{id}")
