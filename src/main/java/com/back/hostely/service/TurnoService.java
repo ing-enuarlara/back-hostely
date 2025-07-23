@@ -106,7 +106,7 @@ public class TurnoService {
 
         for (Turno turno : turnosDelDia) {
             // Verificamos según el tipo de fichaje
-            if ("ENTRADA".equalsIgnoreCase(tipoFichaje) && turno.getEstado() == TurnoEstado.ASIGNADO) {
+            if ("ENTRADA".equalsIgnoreCase(tipoFichaje) && (turno.getEstado() == TurnoEstado.ASIGNADO || turno.getEstado() == TurnoEstado.RETRASO)) {
                 turno.setEstado(TurnoEstado.EN_CURSO);
                 turnoRepository.save(turno);
                 break;
