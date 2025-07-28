@@ -2,12 +2,30 @@ package com.back.hostely.dto;
 
 import java.time.LocalTime;
 
+import com.back.hostely.model.HorarioPuesto;
+
 public class HorarioPuestoDTO {
     private Integer id;
     private LocalTime timeInicio;
     private LocalTime timeFin;
     private Integer puestoId;
     private String puestoNombre;
+
+    public HorarioPuestoDTO() {}
+
+    public HorarioPuestoDTO(Integer id, LocalTime timeInicio, LocalTime timeFin) {
+        this.id = id;
+        this.timeInicio = timeInicio;
+        this.timeFin = timeFin;
+    }
+
+    public HorarioPuestoDTO(HorarioPuesto hp) {
+        this.id = hp.getId();
+        this.timeInicio = hp.getTimeInicio();
+        this.timeFin = hp.getTimeFin();
+        this.puestoId = hp.getPuesto() != null ? hp.getPuesto().getId() : null;
+        this.puestoNombre = hp.getPuesto() != null ? hp.getPuesto().getNombre() : null;
+    }
 
     public Integer getId() {
         return id;

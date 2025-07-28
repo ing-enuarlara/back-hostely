@@ -1,5 +1,8 @@
 package com.back.hostely.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,7 +26,8 @@ public class Puesto {
     @Column(name = "pues_created_at", insertable = false, updatable = false)
     private String creadoEn;
 
-    // Getters y Setters
+    @OneToMany(mappedBy = "puesto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<HorarioPuesto> horarios = new HashSet<>();
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -39,4 +43,11 @@ public class Puesto {
 
     public String getCreadoEn() { return creadoEn; }
     public void setCreadoEn(String creadoEn) { this.creadoEn = creadoEn; }
+
+    public Set<HorarioPuesto> getHorarios() {
+        return horarios;
+    }
+    public void setHorarios(Set<HorarioPuesto> horarios) {
+        this.horarios = horarios;
+    }
 }

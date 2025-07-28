@@ -16,6 +16,7 @@ public class TurnoDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Time fin;
     private TurnoEstado estado;
+    private Integer puestoId;
     private Integer usuarioId;
     private Integer sedeId;
     private Integer negocioId;
@@ -60,6 +61,14 @@ public class TurnoDTO {
 
     public void setEstado(TurnoEstado estado) {
         this.estado = estado;
+    }
+
+    public Integer getPuestoId() {
+        return puestoId;
+    }
+
+    public void setPuestoId(Integer puestoId) {
+        this.puestoId = puestoId;
     }
 
     public Integer getUsuarioId() {

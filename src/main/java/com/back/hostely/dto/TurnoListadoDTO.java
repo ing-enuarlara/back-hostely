@@ -16,7 +16,10 @@ public class TurnoListadoDTO {
     private String usuarioFoto;
     private Integer usuarioRolId;
     private String usuarioRolNombre;
+    private Integer sedeId;
     private String localNombre;
+    private Integer puestoId;
+    private String puestoNombre;
 
     public TurnoListadoDTO() {
     }
@@ -27,7 +30,6 @@ public class TurnoListadoDTO {
         this.inicio = turno.getInicio();
         this.fin = turno.getFin();
         this.estado = turno.getEstado();
-        this.localNombre = turno.getSede().getNombre();
 
         if (turno.getUsuario() != null) {
             this.usuarioId = turno.getUsuario().getId();
@@ -37,6 +39,16 @@ public class TurnoListadoDTO {
                 this.usuarioRolId = turno.getUsuario().getRolPrincipal().getId();
                 this.usuarioRolNombre = turno.getUsuario().getRolPrincipal().getNombre();
             }
+        }
+
+        if (turno.getSede() != null) {
+            this.sedeId = turno.getSede().getId();
+            this.localNombre = turno.getSede().getNombre();
+        }
+
+        if (turno.getPuesto() != null) {
+            this.puestoId = turno.getPuesto().getId();
+            this.puestoNombre = turno.getPuesto().getNombre();
         }
     }
 
@@ -96,6 +108,14 @@ public class TurnoListadoDTO {
         this.usuarioNombre = usuarioNombre;
     }
 
+    public Integer getSedeId() {
+        return sedeId;
+    }
+
+    public void setSedeId(Integer sedeId) {
+        this.sedeId = sedeId;
+    }
+
     public String getLocalNombre() {
         return localNombre;
     }
@@ -126,5 +146,21 @@ public class TurnoListadoDTO {
 
     public void setUsuarioRolNombre(String usuarioRolNombre) {
         this.usuarioRolNombre = usuarioRolNombre;
+    }
+
+    public Integer getPuestoId() {
+        return puestoId;
+    }
+
+    public void setPuestoId(Integer puestoId) {
+        this.puestoId = puestoId;
+    }
+
+    public String getPuestoNombre() {
+        return puestoNombre;
+    }
+
+    public void setPuestoNombre(String puestoNombre) {
+        this.puestoNombre = puestoNombre;
     }
 }

@@ -22,6 +22,9 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer> {
 
 	List<Turno> findByEstado(TurnoEstado estado);
 
+	@Query("SELECT t FROM Turno t WHERE t.puesto.id = :puestoId")
+	List<Turno> findByPuestoId(@Param("puestoId") Integer puestoId);
+
 	@Query("SELECT t FROM Turno t WHERE t.usuario.id = :usuarioId")
 	List<Turno> findByUsuarioId(@Param("usuarioId") Integer usuarioId);
 
@@ -39,11 +42,19 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer> {
 		"(t.inicio BETWEEN :inicio AND :fin))")
 	List<Turno> verificarConflictos(Date fecha, Time inicio, Time fin, Integer usuarioId);
 
-	@Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND t.id <> :turnoId AND " +
+	@Query("SELECT t FROM Turno t WHERE t.fecha = :fecha AND t.usuario.id = :usuarioId AND t.puesto.id = :puestoId AND t.id <> :turnoId AND " +
 		"((:inicio BETWEEN t.inicio AND t.fin) OR (:fin BETWEEN t.inicio AND t.fin) OR " +
 		"(t.inicio BETWEEN :inicio AND :fin))")
-	List<Turno> verificarConflictosEdit(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId);
+	List<Turno> verificarConflictosEdit(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer puestoId, Integer turnoId);
 
 	@Query("SELECT t FROM Turno t WHERE t.usuario.id = :usuarioId AND t.fecha = :fecha")
 	List<Turno> findByUsuarioIdAndFecha(@Param("usuarioId") Integer usuarioId, @Param("fecha") Date fecha);
+
+	@Query("SELECT t FROM Turno t " +
+		"WHERE t.negocio.id = :negocioId " +
+		"AND t.fecha BETWEEN :inicio AND :fin " +
+		"AND (:sedeId IS NULL OR t.sede.id = :sedeId) " +
+		"AND (:puestoId IS NULL OR t.puesto.id = :puestoId) " +
+		"AND (:usuarioId IS NULL OR t.usuario.id = :usuarioId)")
+	List<Turno> findByNegocioYFechas(@Param("negocioId") Integer negocioId, @Param("sedeId") Integer sedeId, @Param("puestoId") Integer puestoId, @Param("usuarioId") Integer usuarioId, @Param("inicio") Date inicio, @Param("fin") Date fin);
 }

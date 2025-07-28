@@ -9,6 +9,8 @@ import com.back.hostely.model.Turno;
 public class TurnoUsuarioDTO {
     private String empleado;
     private Integer usuarioId;
+    private Integer puestoId;
+    private String puestoNombre;
     private Date fecha;
     private Time inicio;
     private Time fin;
@@ -18,6 +20,8 @@ public class TurnoUsuarioDTO {
     public TurnoUsuarioDTO(Turno turno) {
         this.usuarioId = turno.getUsuario().getId();
         this.empleado = turno.getUsuario().getNombre();
+        this.puestoId = turno.getPuesto().getId();
+        this.puestoNombre = turno.getPuesto().getNombre();
         this.fecha = turno.getFecha();
         this.inicio = turno.getInicio();
         this.fin = turno.getFin();
@@ -39,6 +43,22 @@ public class TurnoUsuarioDTO {
 
     public void setEmpleado(String empleado) {
         this.empleado = empleado;
+    }
+
+    public Integer getPuestoId() {
+        return puestoId;
+    }
+
+    public void setPuestoId(Integer puestoId) {
+        this.puestoId = puestoId;
+    }
+
+    public String getPuestoNombre() {
+        return puestoNombre;
+    }
+
+    public void setPuestoNombre(String puestoNombre) {
+        this.puestoNombre = puestoNombre;
     }
 
     public Date getFecha() {

@@ -26,6 +26,10 @@ public class PuestoService {
         return repository.findByNegocioId(negocioId);
     }
 
+    public List<Puesto> buscarPorNegocioConHorarios(Integer negocioId) {
+        return repository.findByNegocioIdWithHorarios(negocioId);
+    }
+
     public Puesto crear(Puesto puesto) {
         return repository.save(puesto);
     }

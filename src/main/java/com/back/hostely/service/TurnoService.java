@@ -1,6 +1,11 @@
 package com.back.hostely.service;
 
+import com.back.hostely.dto.HorarioDTO;
+import com.back.hostely.dto.PlanningDTO;
+import com.back.hostely.dto.PuestoPlanningDTO;
+import com.back.hostely.dto.TurnoSemanalDTO;
 import com.back.hostely.enums.TurnoEstado;
+import com.back.hostely.model.Puesto;
 import com.back.hostely.model.Turno;
 import com.back.hostely.repository.TurnoRepository;
 import jakarta.transaction.Transactional;
@@ -12,6 +17,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @Service
@@ -20,6 +26,9 @@ public class TurnoService {
 
     @Autowired
     private TurnoRepository turnoRepository;
+
+    @Autowired
+    private PuestoService puestoService;
 
     public List<Turno> buscarTodos() {
         return turnoRepository.findAll();
@@ -45,6 +54,10 @@ public class TurnoService {
         return turnoRepository.findByEstado(estado);
     }
 
+    public List<Turno> buscarPorPuesto(Integer puestoId) {
+        return turnoRepository.findByPuestoId(puestoId);
+    }
+
     public List<Turno> buscarPorUsuario(Integer usuarioId) {
         return turnoRepository.findByUsuarioId(usuarioId);
     }
@@ -65,8 +78,8 @@ public class TurnoService {
         return !turnoRepository.verificarConflictos(fecha, inicio, fin, usuarioId).isEmpty();
     }
 
-    public boolean hayConflictoHorarioEditar(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer turnoId) {
-        return !turnoRepository.verificarConflictosEdit(fecha, inicio, fin, usuarioId, turnoId).isEmpty();
+    public boolean hayConflictoHorarioEditar(Date fecha, Time inicio, Time fin, Integer usuarioId, Integer puestoId, Integer turnoId) {
+        return !turnoRepository.verificarConflictosEdit(fecha, inicio, fin, usuarioId, puestoId, turnoId).isEmpty();
     }
 
     public Turno guardar(Turno turno) {
@@ -77,26 +90,71 @@ public class TurnoService {
         turnoRepository.deleteById(id);
     }
 
-    // public void actualizarEstadoSiCoincideConFichaje(Integer usuarioId, Timestamp fechaHoraFichaje, String tipoFichaje) {
-    //     Date fecha = Date.valueOf(fechaHoraFichaje.toLocalDateTime().toLocalDate());
-    //     Time hora = Time.valueOf(fechaHoraFichaje.toLocalDateTime().toLocalTime());
+    public PlanningDTO obtenerPlanningSemana(Integer negocioId, Integer sedeId, Integer puestoId, Integer usuarioId) {
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes = hoy.with(DayOfWeek.MONDAY);
+        LocalDate domingo = lunes.plusDays(6);
 
-    //     List<Turno> turnosDelDia = turnoRepository.findByUsuarioIdAndFecha(usuarioId, fecha);
+        List<Turno> turnosSemana = turnoRepository.findByNegocioYFechas(negocioId, sedeId, puestoId, usuarioId, Date.valueOf(lunes), Date.valueOf(domingo));
 
-    //     for (Turno turno : turnosDelDia) {
-    //         if (!turno.getEstado().equals(TurnoEstado.ASIGNADO)) continue;
+        if (sedeId != null && sedeId > 0) {
+            turnosSemana = turnosSemana.stream()
+                .filter(t -> t.getSede().getId().equals(sedeId))
+                .toList();
+        }
 
-    //         if (!hora.before(turno.getInicio()) && !hora.after(turno.getFin())) {
-    //             if ("ENTRADA".equalsIgnoreCase(tipoFichaje)) {
-    //                 turno.setEstado(TurnoEstado.EN_CURSO);
-    //             } else if ("SALIDA".equalsIgnoreCase(tipoFichaje)) {
-    //                 turno.setEstado(TurnoEstado.FINALIZADO);
-    //             }
-    //             turnoRepository.save(turno);
-    //             break;
-    //         }
-    //     }
-    // }
+        if (puestoId != null && puestoId > 0) {
+            turnosSemana = turnosSemana.stream()
+                .filter(t -> t.getPuesto().getId().equals(puestoId))
+                .toList();
+        }
+
+        if (usuarioId != null && usuarioId > 0) {
+            turnosSemana = turnosSemana.stream()
+                .filter(t -> t.getUsuario().getId().equals(usuarioId))
+                .toList();
+        }
+
+        List<Puesto> puestos = puestoService.buscarPorNegocio(negocioId);
+        if (puestoId != null && puestoId > 0) {
+            puestos = puestos.stream().filter(p -> p.getId().equals(puestoId)).toList();
+        }
+
+        List<PuestoPlanningDTO> puestosDTO = puestos.stream().map(p -> {
+            PuestoPlanningDTO dto = new PuestoPlanningDTO();
+            dto.setId(p.getId());
+            dto.setNombre(p.getNombre());
+            dto.setHorarios(p.getHorarios().stream().map(h -> {
+                HorarioDTO hdto = new HorarioDTO();
+                hdto.setId(h.getId());
+                hdto.setInicio(h.getTimeInicio().toString());
+                hdto.setFin(h.getTimeFin().toString());
+                return hdto;
+            }).toList());
+            return dto;
+        }).toList();
+
+        List<TurnoSemanalDTO> turnosDTO = turnosSemana.stream().map(t -> {
+            TurnoSemanalDTO dto = new TurnoSemanalDTO();
+            dto.setId(t.getId());
+            dto.setSedeId(t.getSede().getId());
+            dto.setSedeNombre(t.getSede().getNombre());
+            dto.setPuestoId(t.getPuesto().getId());
+            dto.setPuestoNombre(t.getPuesto().getNombre());
+            dto.setUsuarioId(t.getUsuario().getId());
+            dto.setUsuarioNombre(t.getUsuario().getNombre());
+            dto.setFecha(t.getFecha().toString());
+            dto.setInicio(t.getInicio().toString());
+            dto.setFin(t.getFin().toString());
+            dto.setEstado(t.getEstado().name());
+            return dto;
+        }).toList();
+
+        PlanningDTO planning = new PlanningDTO();
+        planning.setPuestos(puestosDTO);
+        planning.setTurnos(turnosDTO);
+        return planning;
+    }
 
     public void actualizarEstadoSiCoincideConFichaje(Integer usuarioId, Timestamp fechaHoraFichaje, String tipoFichaje) {
         LocalDate fecha = fechaHoraFichaje.toLocalDateTime().toLocalDate();

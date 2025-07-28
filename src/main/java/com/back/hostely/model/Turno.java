@@ -32,6 +32,10 @@ public class Turno {
     private TurnoEstado estado = TurnoEstado.ASIGNADO;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "turn_puesto", nullable = false)
+    private Puesto puesto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turn_usuario", nullable = false)
     private Usuario usuario;
 
@@ -96,6 +100,14 @@ public class Turno {
 
     public void setEstado(TurnoEstado estado) {
         this.estado = estado;
+    }
+
+    public Puesto getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(Puesto puesto) {
+        this.puesto = puesto;
     }
 
     public Usuario getUsuario() {

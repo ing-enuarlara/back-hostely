@@ -1,5 +1,6 @@
 package com.back.hostely.controller;
 
+import com.back.hostely.dto.PuestoDTO;
 import com.back.hostely.model.Puesto;
 import com.back.hostely.service.PuestoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/puestos")
@@ -27,8 +29,10 @@ public class puestoController {
     }
 
     @GetMapping("/negocio/{negocioId}")
-    public List<Puesto> porNegocio(@PathVariable Integer negocioId) {
-        return service.buscarPorNegocio(negocioId);
+    public List<PuestoDTO> porNegocio(@PathVariable Integer negocioId) {
+        return service.buscarPorNegocioConHorarios(negocioId).stream()
+                .map(PuestoDTO::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping

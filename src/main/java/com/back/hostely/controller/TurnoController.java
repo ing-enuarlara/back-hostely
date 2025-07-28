@@ -1,5 +1,6 @@
 package com.back.hostely.controller;
 
+import com.back.hostely.dto.PlanningDTO;
 import com.back.hostely.dto.TurnoDTO;
 import com.back.hostely.dto.TurnoListadoDTO;
 import com.back.hostely.dto.TurnoUsuarioDTO;
@@ -8,10 +9,12 @@ import com.back.hostely.model.Negocio;
 import com.back.hostely.model.Sede;
 import com.back.hostely.model.Turno;
 import com.back.hostely.model.Usuario;
+import com.back.hostely.model.Puesto;
 import com.back.hostely.service.NegocioService;
 import com.back.hostely.service.SedeService;
 import com.back.hostely.service.TurnoService;
 import com.back.hostely.service.UsuarioService;
+import com.back.hostely.service.PuestoService;
 import com.back.hostely.repository.TurnoRepository;
 
 import jakarta.validation.Valid;
@@ -36,6 +39,9 @@ public class TurnoController {
 
     @Autowired
     private TurnoRepository turnoRepository;
+
+    @Autowired
+    private PuestoService puestoService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -63,6 +69,7 @@ public class TurnoController {
         TurnoDTO dto = new TurnoDTO();
 
         dto.setId(turno.getId());
+        dto.setPuestoId(turno.getPuesto().getId());
         dto.setUsuarioId(turno.getUsuario().getId());
         dto.setSedeId(turno.getSede().getId());
         dto.setNegocioId(turno.getNegocio().getId());
@@ -96,6 +103,13 @@ public class TurnoController {
         return turnoService.buscarPorEstado(estado);
     }
 
+    @GetMapping("/puesto/{puestoId}")
+    public List<TurnoUsuarioDTO> buscarPorPuesto(@PathVariable Integer puestoId) {
+        return turnoService.buscarPorPuesto(puestoId).stream()
+                .map(TurnoUsuarioDTO::new)
+                .toList();
+    }
+
     @GetMapping("/usuario/{usuarioId}")
     public List<TurnoUsuarioDTO> buscarPorUsuario(@PathVariable Integer usuarioId) {
         return turnoService.buscarPorUsuario(usuarioId).stream()
@@ -122,6 +136,16 @@ public class TurnoController {
         return turnoService.buscarPorCreador(usuarioId);
     }
 
+    @GetMapping("/planning")
+    public ResponseEntity<PlanningDTO> obtenerPlanning(
+            @RequestParam Integer negocioId,
+            @RequestParam(required = false) Integer sedeId,
+            @RequestParam(required = false) Integer puestoId,
+            @RequestParam(required = false) Integer usuarioId
+    ) {
+        return ResponseEntity.ok(turnoService.obtenerPlanningSemana(negocioId, sedeId, puestoId, usuarioId));
+    }
+
     @PostMapping
     public ResponseEntity<?> crearTurno(@Valid @RequestBody TurnoDTO dto) {
         if (turnoService.hayConflictoHorario(dto.getFecha(), dto.getInicio(), dto.getFin(), dto.getUsuarioId())) {
@@ -135,6 +159,7 @@ public class TurnoController {
         turno.setEstado(dto.getEstado() != null ? dto.getEstado() : TurnoEstado.ASIGNADO);
         turno.setDescripcion(dto.getDescripcion());
 
+        Optional<Puesto> puestoOpt = puestoService.buscarPorId(dto.getPuestoId());
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
         Optional<Sede> sedeOpt = sedeService.buscarPorId(dto.getSedeId());
         Optional<Negocio> negocioOpt = negocioService.buscarPorId(dto.getNegocioId());
@@ -144,6 +169,7 @@ public class TurnoController {
             return ResponseEntity.notFound().build();
         }
 
+        turno.setPuesto(puestoOpt.get());
         turno.setUsuario(usuarioOpt.get());
         turno.setSede(sedeOpt.get());
         turno.setNegocio(negocioOpt.get());
@@ -156,6 +182,7 @@ public class TurnoController {
         respuesta.setInicio(guardado.getInicio());
         respuesta.setFin(guardado.getFin());
         respuesta.setEstado(guardado.getEstado());
+        respuesta.setPuestoId(dto.getPuestoId());
         respuesta.setUsuarioId(dto.getUsuarioId());
         respuesta.setSedeId(dto.getSedeId());
         respuesta.setNegocioId(dto.getNegocioId());
@@ -173,16 +200,16 @@ public class TurnoController {
         }
 
         // Validar existencia de entidades relacionadas
+        Optional<Puesto> puestoOpt = puestoService.buscarPorId(dto.getPuestoId());
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
         Optional<Sede> sedeOpt = sedeService.buscarPorId(dto.getSedeId());
 
-        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty()) {
+        if (usuarioOpt.isEmpty() || sedeOpt.isEmpty() || puestoOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Alguna entidad relacionada no existe.");
         }
 
         // Verificar conflicto de horario
-        if (turnoService.hayConflictoHorarioEditar(dto.getFecha(), dto.getInicio(), dto.getFin(), dto.getUsuarioId(),
-                dto.getId())) {
+        if (turnoService.hayConflictoHorarioEditar(dto.getFecha(), dto.getInicio(), dto.getFin(), dto.getUsuarioId(), dto.getPuestoId(), dto.getId())) {
             return ResponseEntity.badRequest().body("Conflicto de horario detectado.");
         }
 
@@ -192,6 +219,7 @@ public class TurnoController {
         turno.setInicio(dto.getInicio());
         turno.setFin(dto.getFin());
         turno.setEstado(turno.getEstado());
+        turno.setPuesto(puestoOpt.get());
         turno.setUsuario(usuarioOpt.get());
         turno.setSede(sedeOpt.get());
         turno.setDescripcion(dto.getDescripcion());
@@ -204,6 +232,7 @@ public class TurnoController {
         respuesta.setInicio(actualizado.getInicio());
         respuesta.setFin(actualizado.getFin());
         respuesta.setEstado(actualizado.getEstado());
+        respuesta.setPuestoId(actualizado.getPuesto().getId());
         respuesta.setUsuarioId(actualizado.getUsuario().getId());
         respuesta.setSedeId(actualizado.getSede().getId());
         respuesta.setNegocioId(actualizado.getNegocio() != null ? actualizado.getNegocio().getId() : null);
