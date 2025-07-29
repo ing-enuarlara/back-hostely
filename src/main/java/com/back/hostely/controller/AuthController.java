@@ -123,6 +123,7 @@ public class AuthController {
                 rolMap.put("id", rol.getId());
                 rolMap.put("nombre", rol.getNombre());
                 rolMap.put("principal", ur.getPrincipal());
+                rolMap.put("permisos", rol.getPermisos());
                 roles.add(rolMap);
             });
         }
